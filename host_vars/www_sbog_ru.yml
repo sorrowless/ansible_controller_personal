@@ -1,0 +1,13 @@
+---
+ansible_host: rusty.host
+ansible_port: 909
+ansible_user: deployer
+ansible_become: true
+
+# sbog_ru vars
+site_hostname: rusty.host
+
+# Letsencrypt vars
+le_domain_names:
+  - rusty.host
+le_stop_service: nginx

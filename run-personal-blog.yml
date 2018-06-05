@@ -1,0 +1,8 @@
+---
+- name: Deploy personal blog to target host
+  hosts: blog_sbog_ru_webservers
+  remote_user: root
+
+  roles:
+    - { role: letsencrypt, tags: ['tls', 'nginx'] }
+    - { role: blog_sbog_ru, tags: ['nginx', 'personal'] }

@@ -1,0 +1,22 @@
+---
+ansible_host: rusty.host
+ansible_port: 909
+ansible_user: sbog
+ansible_become: true
+
+# Hosts name
+server_common_host:
+  dns_hostname: "{{ ansible_host }}"
+  packages:
+    - atop
+    - sysstat
+    - iotop
+    - iftop
+    - python
+    - git
+
+# Iptables rules
+iptables:
+  # Beware about just opening rmq ports w/o firewalling them
+  host_allowed_tcp_ports: [22, 80, 443, 909]
+  flush_all: true

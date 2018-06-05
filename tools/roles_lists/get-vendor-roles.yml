@@ -1,1 +1,8 @@
 ---
+- src: https://github.com/sorrowless/ansible_sbog_ru.git
+  version: master
+  name: sbog_ru
+
+- src: https://github.com/sorrowless/ansible_blog_sbog_ru.git
+  version: master
+  name: blog_sbog_ru

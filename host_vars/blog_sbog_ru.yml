@@ -1,0 +1,15 @@
+---
+ansible_host: blog.rusty.host
+ansible_port: 909
+ansible_user: deployer
+ansible_become: true
+
+# sbog_ru vars
+site_hostname: blog.rusty.host
+mainsite_hostname: rusty.host
+ya_metrika: 44376961
+
+# Letsencrypt vars
+le_domain_names:
+  - blog.rusty.host
+le_stop_service: nginx
