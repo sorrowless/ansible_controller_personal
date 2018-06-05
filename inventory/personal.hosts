@@ -1,6 +1,7 @@
 mainsite
 www_sbog_ru
 blog_sbog_ru
+mail_sbog_ru
 
 [redis_servers]
 [rabbitmq_servers]
@@ -20,3 +21,6 @@ www_sbog_ru
 
 [blog_sbog_ru_webservers]
 blog_sbog_ru
+
+[mx]
+mail_sbog_ru
