@@ -28,3 +28,5 @@ slave
 [mysql]
 [squids]
 [mx]
+[backups]
+[fluentd]

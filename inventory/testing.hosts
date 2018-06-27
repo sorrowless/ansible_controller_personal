@@ -29,3 +29,15 @@ test
 
 [mysql]
 test
+
+[backups]
+test
+
+[fluentd]
+test
+
+[nginx]
+test
+
+[checks_tls_certs]
+test
