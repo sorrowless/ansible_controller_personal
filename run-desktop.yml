@@ -1,3 +1,5 @@
+# It usually can be run by something like this:
+# > apl -i 'localhost,' -c local -b -K run-desktop.yml --ask-vault-pass --tags "dotcommon"
 ---
 - name: Install needed desktop things everywhere
   hosts: all
