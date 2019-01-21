@@ -3,10 +3,14 @@
   version: master
   name: server_common
 
+- src: https://github.com/sorrowless/ansible_pw_policy.git
+  version: master
+  name: pw_policy
+
 - src: https://github.com/sorrowless/ansible_iptables.git
   version: master
   name: iptables
 
-- src: willshersystems.sshd
-  version: 0.5.1
+- src: https://github.com/sorrowless/ansible-sshd.git
+  version: master
   name: sshd
