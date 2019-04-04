@@ -1,0 +1,34 @@
+---
+# Mail vars
+mail_domain: sbog.ru
+mail_hostname: mail.sbog.ru
+mail_ssl_enabled: true
+check_policy:
+  enabled: False
+  address: "127.0.0.1"
+  port: 10023
+dkim:
+  enabled: false
+  milter_address: "127.0.0.1"
+  milter_port: 8891
+spamassassin:
+  enabled: false
+postfix_db_user: "{{ vault_postfix_db_user }}"
+postfix_db_password: "{{ vault_postfix_db_password }}"
+postfix_db_host: "127.0.0.1"
+postfix_db_name: postfix
+mysql_port: 3306
+mysql_bind_address: "127.0.0.1"
+mysql_root_db_pass: "{{ vault_mysql_root_db_pass }}"
+mysql_users: "{{ vault_mysql_users }}"
+mysql_db:
+  - name: postfix
+    replicate: no
+postfixadmin_db_password: "{{ vault_postfixadmin_db_password }}"
+postfixadmin_superuser: "{{ vault_postfixadmin_superuser }}"
+postfixadmin_superpass: "{{ vault_postfixadmin_superpass }}"
+# Dovecot additional vars
+mx_hosts:
+  - mail.sbog.ru
+  - smtp.sbog.ru
+  - imap.sbog.ru

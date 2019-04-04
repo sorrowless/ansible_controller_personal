@@ -1,0 +1,169 @@
+---
+tls_basedir: "{{ tls_host.acme_domains[0] }}"
+# This name gotten from role defaults
+site_hostname: sbog.ru
+website_domainname: "{{ site_hostname }}"
+# This name gotten from role defaults
+blog_hostname: blog.sbog.ru
+blog_domainname: "{{ blog_hostname }}"
+mainsite_hostname: sbog.ru
+ya_metrika: "{{ vault_ya_metrika }}"
+# Rss-related vars
+ttrss_domainname: rss.sbog.ru
+ttrss_common_host: "{{ vault_ttrss_common_host }}"
+
+# Nginx-related vars
+nginx_sites:
+  "{{ website_domainname }}_http":
+    - listen 80
+    - server_name {{ website_domainname }} www.{{ website_domainname }}
+    - return 301 https://$host$request_uri
+
+  "www.{{ website_domainname }}_https":
+    - listen 443 ssl http2
+    - server_name www.{{ website_domainname }}
+    - ssl_certificate /etc/ssl_certs/{{ tls_basedir }}/fullchain.pem
+    - ssl_certificate_key /etc/ssl_certs/{{ tls_basedir }}/private.pem
+    - ssl_dhparam /etc/ssl_certs/dhparam.pem
+    - ssl_protocols       TLSv1 TLSv1.1 TLSv1.2
+    - ssl_session_cache shared:SSL:10m
+    - ssl_ciphers         EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
+    - ssl_prefer_server_ciphers   on
+    - return 301 https://{{ website_domainname }}$request_uri
+
+  "{{ website_domainname }}_https":
+    - listen 443 ssl http2
+    - server_name {{ website_domainname }}
+    - ssl_certificate /etc/ssl_certs/{{ tls_basedir }}/fullchain.pem
+    - ssl_certificate_key /etc/ssl_certs/{{ tls_basedir }}/private.pem
+    - ssl_dhparam /etc/ssl_certs/dhparam.pem
+    - ssl_protocols       TLSv1 TLSv1.1 TLSv1.2
+    - ssl_session_cache shared:SSL:10m
+    - ssl_ciphers         EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
+    - ssl_prefer_server_ciphers   on
+    - gzip on
+    - charset utf-8
+    - client_max_body_size 32m
+    - keepalive_timeout 5
+    - gzip_types *
+    - access_log /var/log/nginx/{{ website_domainname }}.access.log
+    - error_log /var/log/nginx/{{ website_domainname }}.error.log
+    - root /var/www/{{ website_domainname }}/
+    - index index.html index.htm
+    - |
+      location / {
+        try_files $uri $uri/ /index.html;
+      }
+    - error_page 404 /404.html
+    - |
+      location = /404.html {
+          root   /usr/share/nginx/html;
+      }
+    - |
+      location /doc/ {
+          alias /usr/share/doc/;
+          autoindex on;
+          allow 127.0.0.1;
+          deny all;
+      }
+
+  "{{ blog_domainname }}_http":
+    - listen 80
+    - server_name {{ blog_domainname }}
+    - return 301 https://$host$request_uri
+
+  "{{ blog_domainname }}_https":
+    - listen 443 ssl http2
+    - server_name {{ blog_domainname }}
+    - ssl_certificate /etc/ssl_certs/{{ tls_basedir }}/fullchain.pem
+    - ssl_certificate_key /etc/ssl_certs/{{ tls_basedir }}/private.pem
+    - ssl_dhparam /etc/ssl_certs/dhparam.pem
+    - ssl_protocols       TLSv1 TLSv1.1 TLSv1.2
+    - ssl_session_cache shared:SSL:10m
+    - ssl_ciphers         EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
+    - ssl_prefer_server_ciphers   on
+    - gzip on
+    - charset utf-8
+    - client_max_body_size 32m
+    - keepalive_timeout 5
+    - gzip_types *
+    - access_log /var/log/nginx/{{ blog_domainname }}.access.log
+    - error_log /var/log/nginx/{{ blog_domainname }}.error.log
+    - root /var/www/{{ blog_domainname }}/
+    - index index.html index.htm
+    - |
+      location / {
+        try_files $uri $uri/ /index.html;
+      }
+    - error_page 404 /404.html
+    - |
+      location = /404.html {
+          root   /usr/share/nginx/html;
+      }
+    - |
+      location /doc/ {
+          alias /usr/share/doc/;
+          autoindex on;
+          allow 127.0.0.1;
+          deny all;
+      }
+
+  "{{ ttrss_domainname }}_http":
+    - listen 80
+    - server_name {{ ttrss_domainname }}
+    - return 301 https://$host$request_uri
+
+  "{{ ttrss_domainname }}_https":
+    - listen 443 ssl http2
+    - server_name {{ ttrss_domainname }}
+    - ssl_certificate /etc/ssl_certs/{{ tls_basedir }}/fullchain.pem
+    - ssl_certificate_key /etc/ssl_certs/{{ tls_basedir }}/private.pem
+    - ssl_dhparam /etc/ssl_certs/dhparam.pem
+    - ssl_protocols       TLSv1 TLSv1.1 TLSv1.2
+    - ssl_session_cache shared:SSL:10m
+    - ssl_ciphers         EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
+    - ssl_prefer_server_ciphers   on
+    - gzip on
+    - charset utf-8
+    - client_max_body_size 32m
+    - keepalive_timeout 5
+    - gzip_types *
+    - access_log /var/log/nginx/{{ ttrss_domainname }}.access.log
+    - error_log /var/log/nginx/{{ ttrss_domainname }}.error.log
+    - root /var/www/ttrss/
+    - index index.html index.htm
+    - |
+      location / {
+        index index.php;
+        try_files $uri $uri/ /index.php?$args;
+      }
+    - |
+      location /doc/ {
+        alias /usr/share/doc/;
+        autoindex on;
+        allow 127.0.0.1;
+        deny all;
+      }
+    - |
+      location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+
+        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include /etc/nginx/fastcgi_params;
+      }
+    - |
+      location ~ /\.ht {
+        deny  all;
+      }
+    - |
+      location ^~ /data {
+        deny  all;
+      }
+    - |
+      location /favicon.ico {
+        log_not_found   off;
+        access_log      off;
+      }

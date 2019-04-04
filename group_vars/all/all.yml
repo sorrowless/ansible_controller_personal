@@ -1,0 +1,63 @@
+---
+# SSH vars
+sshd_port: 909
+sshd:
+  Port: "{{ sshd_port }}"
+  Protocol: 2
+  UsePrivilegeSeparation: yes
+  StrictModes: yes
+  PermitRootLogin: prohibit-password
+  PubkeyAuthentication: yes
+  AuthorizedKeysFile: "%h/.ssh/authorized_keys"
+  IgnoreRhosts: yes
+  PermitEmptyPasswords: no
+  # https://blog.tankywoo.com/linux/2013/09/14/ssh-passwordauthentication-vs-challengeresponseauthentication.html
+  ChallengeResponseAuthentication: no
+  PasswordAuthentication: yes
+  X11Forwarding: no
+  PrintMotd: yes
+  TCPKeepAlive: yes
+  PrintLastLog: yes
+  Banner: /etc/issue.net
+  AcceptEnv: "LANG LC_*"
+  Subsystem: "sftp /usr/lib/openssh/sftp-server"
+  UsePAM: yes
+  ClientAliveInterval: 120
+
+# TLS group vars
+tls_group:
+  type: acme
+
+git_username: sorrowless
+git_email: "{{ vault_git_email }}"
+
+iptables:
+  group_allowed_tcp_ports: ["{{ sshd.Port }}"]
+  flush_all: True
+
+users: "{{ vault_users }}"
+server_common_group:
+  dns_hostname: server
+  users:
+    user_group_1:
+      name: sbog
+      comment: "Administrator. Ask anything at sbog@sbog.ru."
+      groups: sudo
+      remove: no
+      state: present
+      # Gen pass by python -c 'import crypt; print(crypt.crypt("This is my Password", "$1$blackgolem$"))'
+      password: "{{ users.sbog | password_hash('sha512', users.salt) }}"
+      ssh_keys:
+        - name: https://github.com/sorrowless.keys
+          state: present
+    user_group_2:
+      name: deployer
+      comment: "Deployment account. Ask anything at sbog@sbog.ru."
+      groups: sudo
+      remove: no
+      state: present
+      # Gen pass by python -c 'import crypt; print(crypt.crypt("This is my Password", "$1$blackgolem$"))'
+      password: "{{ users.deployer | password_hash('sha512', users.salt) }}"
+      ssh_keys:
+        - name: https://github.com/sorrowless.keys
+          state: present

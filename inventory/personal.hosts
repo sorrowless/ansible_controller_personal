@@ -1,7 +1,5 @@
-mainsite
-www_sbog_ru
-blog_sbog_ru
-mail_sbog_ru
+personal_vps
+testhost
 
 [redis_servers]
 [rabbitmq_servers]
@@ -11,16 +9,10 @@ mail_sbog_ru
 [common_checks]
 [mysql_server]
 [jenkins]
-
 [webservers]
-www_sbog_ru
-blog_sbog_ru
 
-[sbog_ru_webservers]
-www_sbog_ru
-
-[blog_sbog_ru_webservers]
-blog_sbog_ru
+[websites]
+personal_vps
 
 [mx]
-mail_sbog_ru
+personal_vps

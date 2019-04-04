@@ -1,21 +1,21 @@
 ---
-ansible_host: rusty.host
-ansible_port: 909
-ansible_user: deployer
+ansible_host: "{{ vault_ansible_host }}"
+ansible_port: 22
+ansible_user: sbog
 ansible_become: true
 
 # Let's Encrypt vars
 le_domain_names:
-  - mail.rusty.host
-  - smtp.rusty.host
-  - imap.rusty.host
-  - pa.mail.rusty.host
+  - "mail.{{ ansible_host }}"
+  - "smtp.{{ ansible_host }}"
+  - "imap.{{ ansible_host }}"
+  - "pa.mail.{{ ansible_host }}"
 le_acme_tool: acme.sh
 le_stop_service: nginx
 
 # Mail vars
-mail_domain: rusty.host
-mail_hostname: mail.rusty.host
+mail_domain: "{{ ansible_host }}"
+mail_hostname: "mail.{{ ansible_host }}"
 mail_ssl_enabled: true
 check_policy:
   enabled: true
@@ -47,3 +47,8 @@ mysql_db:
 postfixadmin_db_password: pfxadmpass
 postfixadmin_superuser: admin
 postfixadmin_superpass: adminpassword
+# Dovecot additional vars
+mx_hosts:
+  - "mail.{{ ansible_host }}"
+  - "smtp.{{ ansible_host }}"
+  - "imap.{{ ansible_host }}"

@@ -1,0 +1,32 @@
+---
+ansible_host: 185.5.250.68
+ansible_port: "{{ sshd_port }}"
+ansible_user: deployer
+ansible_become: true
+
+iptables:
+  host_allowed_tcp_ports: [22, 25, 80, 143, 443, 465, 587, 909, 993, 995]
+  flush_all: True
+
+server_common_host:
+  dns_hostname: "personal-vps"
+  packages:
+    - "{{ server_common_data.packages }}"
+    - vim
+    - pv
+    - nginx
+    - python-setuptools
+
+# Let's Encrypt vars
+tls_host:
+  acme_domains:
+    - mail.sbog.ru
+    - smtp.sbog.ru
+    - imap.sbog.ru
+    - pop.sbog.ru
+    - pop3.sbog.ru
+    - pa.mail.sbog.ru
+    - sbog.ru
+    - www.sbog.ru
+    - blog.sbog.ru
+    - rss.sbog.ru
