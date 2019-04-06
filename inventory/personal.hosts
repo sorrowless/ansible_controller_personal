@@ -11,6 +11,9 @@ testhost
 [jenkins]
 [webservers]
 
+[tls]
+personal_vps
+
 [websites]
 personal_vps
 
