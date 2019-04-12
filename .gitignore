@@ -2,3 +2,4 @@
 roles/*
 inventory/testing.hosts
 host_vars/test.yml
+library
