@@ -1,0 +1,38 @@
+---
+# Rsnapshot vars
+rsnapshot:
+  master: true
+  backup_user: root
+  logfile: /var/log/rsnapshot/rsnapshot.log
+  on_failure: "apprise-backup-telegram@%n.service"
+  retain_daily: 7
+  retain_weekly: 2
+  snapshot_root: /var/backups/personal/
+  backups:
+# Backup beardly database
+    - "backup_script	/usr/bin/mysqldump -u root beardly > beardly.sql	beardly.database/"
+# Backup postfix database
+    - "backup_script	/usr/bin/mysqldump -u root postfix > postfix.sql	postfix.database/"
+# Backup postfixadmin database
+    - "backup_script	/usr/bin/mysqldump -u root postfixadmin > postfixadmin.sql	postfixadmin.database/"
+# Backup ttrss database
+    - "backup_script	/usr/bin/mysqldump -u root ttrss > ttrss.sql	ttrss.database/"
+# Additionally backup all databases
+    - "backup_script	/usr/bin/mysqldump -u root --all-databases > all-databases.sql	all.database/"
+
+# Apprise notifications settings
+apprise:
+  enabled: True
+  notifications:
+    - name: backup
+      title: "Backup went wrong"
+      body_type: cmd_stdout
+      body_cmd: 'systemctl status --full $1'
+      notification_method: telegram
+      telegram_notify_settings:
+        bottoken: "{{ vault_apprise.notifications[0].telegram_notify_settings.bottoken }}"
+        chat_id: "{{ vault_apprise.notifications[0].telegram_notify_settings.chat_id }}"
+
+# Rsnapshot wants to have commands be separated *only* by tabs, so set
+# noexpandtab to prevent converting in Vim
+# vim: set noexpandtab:
