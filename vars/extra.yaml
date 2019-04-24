@@ -1,2 +1,3 @@
 ---
 ansible_become_pass: "{{ lookup('env', 'ANSIBLE_BECOME_PASS') }}"
+ansible_ssh_pass: "{{ lookup('env', 'ANSIBLE_BECOME_PASS') }}"
