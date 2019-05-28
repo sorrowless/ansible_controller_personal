@@ -80,3 +80,6 @@ sudoer_specs:
     operators: ALL
     tags: NOPASSWD
     commands: ALL
+
+nginx_official_repo: True
+nginx_official_repo_mainline: True

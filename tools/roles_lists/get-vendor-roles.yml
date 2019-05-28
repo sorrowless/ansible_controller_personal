@@ -8,5 +8,5 @@
   name: blog_sbog_ru
 
 - src: jdauphant.nginx
-  version: v2.17.1
+  version: v2.21.2
   name: nginx

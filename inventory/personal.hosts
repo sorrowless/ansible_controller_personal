@@ -22,3 +22,6 @@ personal_vps
 
 [backups]
 personal_vps
+
+[nginx]
+testhost
