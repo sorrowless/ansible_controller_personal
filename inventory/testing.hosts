@@ -1,5 +1,8 @@
 test
 
+[prometheus_masters]
+test
+
 [redis_servers]
 test
 
@@ -52,4 +55,7 @@ test
 test
 
 [vpn-server]
+test
+
+[postgresql_servers]
 test
