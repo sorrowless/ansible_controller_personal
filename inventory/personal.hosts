@@ -25,3 +25,6 @@ personal_vps
 
 [nginx]
 testhost
+
+[bitwardens]
+personal_vps

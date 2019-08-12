@@ -16,6 +16,7 @@ server_common_host:
     - pv
     - nginx
     - python-setuptools
+    - docker.io
 
 # Let's Encrypt vars
 tls_host:
@@ -31,3 +32,4 @@ tls_host:
     - blog.sbog.ru
     - rss.sbog.ru
     - beardly.sbog.ru
+    - bw.sbog.ru
