@@ -1,0 +1,18 @@
+---
+ansible_host: 45.141.100.44
+ansible_port: "{{ sshd_port }}"
+ansible_user: deployer
+ansible_become: true
+
+iptables:
+  host_allowed_tcp_ports: [22, 909]
+  flush_all: True
+
+server_common_host:
+  dns_hostname: "personal-vps-ruvds"
+  packages:
+    - "{{ server_common_data.packages }}"
+    - vim
+    - pv
+    - python-setuptools
+
