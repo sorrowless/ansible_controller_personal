@@ -30,3 +30,9 @@ testhost
 
 [bitwardens]
 personal_vps
+
+[vpn_server]
+personal_vps_small
+
+[haproxy_servers]
+personal_vps_small
