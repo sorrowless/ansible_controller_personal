@@ -7,6 +7,7 @@ haproxy_conf: |
       tcp-request inspect-delay 5s
       # if ssl_hello_type 1 it means we have classic SSL handshake, so we maybe have some HTTPS
       tcp-request content accept  if { req.ssl_hello_type 1 }
+      use_backend mtproto     if { req.ssl_hello_type 1 } { payload(129,10) -m bin 676f6f676c652e636f6d }
       use_backend https       if { req.ssl_hello_type 1 }
       use_backend ssh         if !{ req.ssl_hello_type 1 } { payload(0,7) -m bin 5353482d322e30 } OR !{ req.ssl_hello_type 1 } { req.len 0 }
       use_backend openvpn     if !{ req.ssl_hello_type 1 } !{ req.len 0 }
@@ -25,3 +26,8 @@ haproxy_conf: |
       mode tcp
       timeout tunnel 12h
       server ssh-localhost 127.0.0.1:909
+
+  backend mtproto
+      mode tcp
+      timeout tunnel 12h
+      server mtproto-localhost 127.0.0.1:2443
