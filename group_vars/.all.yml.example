@@ -23,6 +23,8 @@ sshd:
   AcceptEnv: "LANG LC_*"
   Subsystem: "sftp /usr/lib/openssh/sftp-server"
   UsePAM: yes
+  # Track login key fingerprint to track users who login to server
+  LogLevel: VERBOSE
   ClientAliveInterval: 120
   # No ECDH NIST, no 1024 bit keys, no SHA1
   KexAlgorithms: curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
@@ -94,3 +96,12 @@ sensu_telegram:
 # Nginx common settings
 nginx_official_repo: True
 nginx_official_repo_mainline: True
+
+# Pyenv variables
+pyenv_env: system
+pyenv_path: /usr/local/pyenv
+pyenv_python_versions:
+  - 3.6.6
+pyenv_global: 3.6.6
+pyenv_virtualenvs: []
+#  - { venv_name: "latest", py_version: "3.5.0" }
