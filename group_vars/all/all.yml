@@ -59,17 +59,6 @@ server_common_group:
       ssh_keys:
         - name: https://github.com/sorrowless.keys
           state: present
-    user_group_2:
-      name: deployer
-      comment: "Deployment account. Ask anything at sbog@sbog.ru."
-      groups: sudo
-      remove: no
-      state: present
-      # Gen pass by python -c 'import crypt; print(crypt.crypt("This is my Password", "$1$blackgolem$"))'
-      password: "{{ users.deployer | password_hash('sha512', users.salt) }}"
-      ssh_keys:
-        - name: https://github.com/sorrowless.keys
-          state: present
 
 # Sudoers vars
 sudoer_rewrite_sudoers_file: True

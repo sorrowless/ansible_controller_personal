@@ -1,7 +1,9 @@
 personal_vps
 personal_vps_small
-
 testhost
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
 
 [redis_servers]
 [rabbitmq_servers]
@@ -31,8 +33,10 @@ testhost
 [bitwardens]
 personal_vps
 
-[vpn_server]
+[vpn_servers]
 personal_vps_small
+personal_vps
 
 [haproxy_servers]
 personal_vps_small
+personal_vps
