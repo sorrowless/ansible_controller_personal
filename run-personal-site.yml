@@ -1,3 +1,4 @@
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
 ---
 - name: Deploy personal site to target host
   hosts: websites
