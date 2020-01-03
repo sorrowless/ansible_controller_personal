@@ -9,7 +9,7 @@ iptables:
   flush_all: False
 
 server_common_host:
-  dns_hostname: "personal"
+  dns_hostname: "sbog.ru"
   packages:
     - "{{ server_common_data.packages }}"
     - vim
