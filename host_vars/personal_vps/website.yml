@@ -22,7 +22,7 @@ nginx_sites:
     - return 301 https://$host$request_uri
 
   "www.{{ website_domainname }}_https":
-    - listen 443 ssl http2
+    - listen 4443 ssl http2
     - server_name www.{{ website_domainname }}
     - ssl_certificate /etc/ssl_certs/{{ tls_basedir }}/fullchain.pem
     - ssl_certificate_key /etc/ssl_certs/{{ tls_basedir }}/private.pem
@@ -34,7 +34,7 @@ nginx_sites:
     - return 301 https://{{ website_domainname }}$request_uri
 
   "{{ website_domainname }}_https":
-    - listen 443 ssl http2
+    - listen 4443 ssl http2
     - server_name {{ website_domainname }}
     - ssl_certificate /etc/ssl_certs/{{ tls_basedir }}/fullchain.pem
     - ssl_certificate_key /etc/ssl_certs/{{ tls_basedir }}/private.pem
@@ -75,7 +75,7 @@ nginx_sites:
     - return 301 https://$host$request_uri
 
   "{{ blog_domainname }}_https":
-    - listen 443 ssl http2
+    - listen 4443 ssl http2
     - server_name {{ blog_domainname }}
     - ssl_certificate /etc/ssl_certs/{{ tls_basedir }}/fullchain.pem
     - ssl_certificate_key /etc/ssl_certs/{{ tls_basedir }}/private.pem
@@ -116,7 +116,7 @@ nginx_sites:
     - return 301 https://$host$request_uri
 
   "{{ ttrss_domainname }}_https":
-    - listen 443 ssl http2
+    - listen 4443 ssl http2
     - server_name {{ ttrss_domainname }}
     - ssl_certificate /etc/ssl_certs/{{ tls_basedir }}/fullchain.pem
     - ssl_certificate_key /etc/ssl_certs/{{ tls_basedir }}/private.pem
@@ -176,7 +176,7 @@ nginx_sites:
     - return 301 https://$host$request_uri
 
   "{{ bw_domainname }}_https":
-    - listen 443 ssl http2
+    - listen 4443 ssl http2
     - server_name {{ bw_domainname }}
     - access_log  /var/log/nginx/{{ bw_domainname }}.log
     - error_log  /var/log/nginx/{{ bw_domainname }}.err.log
