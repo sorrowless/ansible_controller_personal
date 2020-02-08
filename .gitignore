@@ -1,7 +1,7 @@
 *.retry
 roles/*
 inventory/testing.hosts
-host_vars/test.yml
+host_vars/test*.yml
 host_vars/test_master.yml
 host_vars/test_slave.yml
 library
