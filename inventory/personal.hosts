@@ -40,3 +40,7 @@ personal_vps
 [haproxy_servers]
 personal_vps_small
 personal_vps
+
+[mtgproxy_servers]
+personal_vps
+

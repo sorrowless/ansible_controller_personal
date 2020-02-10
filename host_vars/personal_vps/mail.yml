@@ -2,31 +2,47 @@
 # Mail vars
 mail_domain: sbog.ru
 mail_hostname: mail.sbog.ru
-mail_ssl_enabled: true
-check_policy:
-  enabled: False
-  address: "127.0.0.1"
-  port: 10023
-dkim:
-  enabled: false
-  milter_address: "127.0.0.1"
-  milter_port: 8891
-spamassassin:
-  enabled: false
-postfix_db_user: "{{ vault_postfix_db_user }}"
-postfix_db_password: "{{ vault_postfix_db_password }}"
-postfix_db_host: "127.0.0.1"
-postfix_db_name: postfix
-mysql_port: 3306
-mysql_bind_address: "127.0.0.1"
-mysql_root_db_pass: "{{ vault_mysql_root_db_pass }}"
-mysql_users: "{{ vault_mysql_users }}"
-mysql_db:
-  - name: postfix
-    replicate: no
 postfixadmin_db_password: "{{ vault_postfixadmin_db_password }}"
 postfixadmin_superuser: "{{ vault_postfixadmin_superuser }}"
 postfixadmin_superpass: "{{ vault_postfixadmin_superpass }}"
+postfix_db_name: postfix
+postfix_db_user: "{{ vault_postfix_db_user }}"
+postfix_db_password: "{{ vault_postfix_db_password }}"
+postfix_db_host: "127.0.0.1"
+
+mariadb_version: 10.4
+mariadb_root_password: "{{ vault_mysql_root_db_pass }}"
+mariadb_bind_address: '127.0.0.1'
+mariadb_slow_query_log: true
+mariadb_max_allowed_packet: 64M
+mariadb_max_connections: '512'
+mariadb_max_user_connections: '510'
+mariadb_wait_timeout: '600'
+mariadb_users:
+  - name: "{{ postfix_db_user }}"
+    password: "{{ postfix_db_password }}"
+    priv: "{{ postfix_db_name }}.*:ALL"
+    host: "localhost"
+    state: present
+  - name: "{{ postfix_db_user }}"
+    password: "{{ postfix_db_password }}"
+    priv: "{{ postfix_db_name }}.*:ALL"
+    host: "127.0.0.1"
+    state: present
+  - name: "postfixadmin"
+    password: "{{ postfixadmin_db_password }}"
+    priv: "{{ postfix_db_name }}.*:ALL"
+    host: "127.0.0.1"
+    state: present
+  - name: "postfixadmin"
+    password: "{{ postfixadmin_db_password }}"
+    priv: "{{ postfix_db_name }}.*:ALL"
+    host: "localhost"
+    state: present
+mariadb_databases:
+  - name: "{{ postfix_db_name }}"
+    state: present
+
 # Dovecot additional vars
 mx_hosts:
   - mail.sbog.ru
