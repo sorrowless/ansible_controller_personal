@@ -44,3 +44,8 @@ personal_vps
 [mtgproxy_servers]
 personal_vps
 
+[davical_servers]
+personal_vps
+
+[postgresql_servers]
+personal_vps

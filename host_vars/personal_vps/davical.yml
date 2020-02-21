@@ -1,0 +1,4 @@
+---
+davical:
+  domain_name: "{{ davical_host }}"
+  admin_email: "{{ vault_davical.admin_email }}"
