@@ -7,7 +7,7 @@ rsnapshot:
   on_failure: "apprise-backup-telegram@%n.service"
   retain_daily: 7
   retain_weekly: 2
-  snapshot_root: /var/backups/personal/
+  snapshot_root: /var/backups/personal/rsnapshot
   backups:
 # Backup beardly database
     - "backup_script	/usr/bin/mysqldump -u root beardly > beardly.sql	beardly.database/"
@@ -21,6 +21,8 @@ rsnapshot:
     - "backup_script	/usr/bin/mysqldump -u root --all-databases > all-databases.sql	all.database/"
 # Backup bitwarden database
     - "backup_script	/usr/bin/sqlite3 /var/bitwarden/db.sqlite3 '.backup db.sqlite3'	bitwarden.database/"
+# Backup Davical database
+    - "backup_script	/usr/bin/pg_dump -U davical_dba davical > davical.sql	davical.database/"
 
 # Apprise notifications settings
 apprise:
@@ -34,6 +36,17 @@ apprise:
       telegram_notify_settings:
         bottoken: "{{ vault_apprise.notifications[0].telegram_notify_settings.bottoken }}"
         chat_id: "{{ vault_apprise.notifications[0].telegram_notify_settings.chat_id }}"
+
+# SSH trust vars
+ssh_trust:
+  - master: true
+    group: backup
+    trust_user:
+      create: false
+      name: root
+      state: present
+      comment: ""
+      shell: /bin/bash
 
 # Rsnapshot wants to have commands be separated *only* by tabs, so set
 # noexpandtab to prevent converting in Vim
