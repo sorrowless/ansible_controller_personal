@@ -49,3 +49,6 @@ personal_vps
 
 [postgresql_servers]
 personal_vps
+
+[taskd_servers]
+personal_vps
