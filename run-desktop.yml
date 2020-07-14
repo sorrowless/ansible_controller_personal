@@ -1,4 +1,4 @@
-#!/usr/bin/env -S ansible-playbook -i 'localhost,' -c local -e @vars/extra.yaml
+#!/usr/bin/env -S ansible-playbook -i "localhost," -c local -e @vars/extra.yaml
 #
 # Playbook to install and run desktop role on target nodes. Run
 # it like usual executable script:
