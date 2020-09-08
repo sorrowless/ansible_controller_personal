@@ -1,4 +1,3 @@
 ---
-- src: https://github.com/sorrowless/ansible_postgresql.git
-  version: master
+- src: sorrowless.postgresql
   name: postgresql
