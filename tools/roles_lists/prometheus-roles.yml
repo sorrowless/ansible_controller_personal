@@ -10,8 +10,7 @@
   version: master
   name: grafana
 
-- src: https://github.com/sorrowless/ansible_tls.git
-  version: master
+- src: sorrowless.tls
   name: tls
 
 - src: jdauphant.nginx
