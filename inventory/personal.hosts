@@ -37,6 +37,9 @@ personal_vps
 personal_vps_small
 personal_vps
 
+[ipsec_vpn_servers]
+personal_vps
+
 [haproxy_servers]
 personal_vps_small
 personal_vps

@@ -1,4 +1,4 @@
-#!/usr/bin/env ansible-playbook
+#!/usr/bin/env ansible-playbook -e @vars/extra.yaml
 #
 # Playbook to work with TLS certificates on target nodes. Run
 # it like usual executable script:
@@ -10,7 +10,8 @@
 ---
 - name: Configure target servers
   hosts: tls
-  remote_user: root
+  become: yes
+  become_user: root
 
   roles:
     - { role: tls, tags: ['tls'] }

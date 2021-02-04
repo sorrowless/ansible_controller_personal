@@ -35,6 +35,7 @@ tls_host:
     - beardly.sbog.ru
     - bw.sbog.ru
     - cal.sbog.ru
+    - ipsec.sbog.ru
   acme_post_hook: 'systemctl reload nginx'
   acme_challenge: dns
   acme_ch_dns_type: dns_cf

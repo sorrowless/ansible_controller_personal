@@ -1,0 +1,8 @@
+---
+ipsec_server_name: ipsec.sbog.ru
+ipsec_override_iptables: no
+ipsec_vpn_network: 10.77.0.0/16
+ipsec_cert_path: /root/.acme.sh.mail.sbog.ru/mail.sbog.ru/mail.sbog.ru.cer
+ipsec_cacert_path: /root/.acme.sh.mail.sbog.ru/mail.sbog.ru/fullchain.cer
+ipsec_private_key_path: /root/.acme.sh.mail.sbog.ru/mail.sbog.ru/mail.sbog.ru.key
+ipsec_clients: "{{ vault_ipsec_clients }}"
