@@ -30,7 +30,7 @@ personal_vps
 [nginx]
 personal_vps
 
-[bitwardens]
+[bitwarden_servers]
 personal_vps
 
 [vpn_servers]
