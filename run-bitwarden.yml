@@ -40,7 +40,7 @@
           version: '2'
           services:
             bitwarden:
-              image: "vaultwarden/server:latest"
+              image: "vaultwarden/server:1.22.2"
               container_name: bitwarden
               ports:
                 # host:port
