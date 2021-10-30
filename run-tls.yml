@@ -14,4 +14,4 @@
   become_user: root
 
   roles:
-    - { role: tls, tags: ['tls'] }
+    - { role: sorrowless.tls, tags: ['tls'] }
