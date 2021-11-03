@@ -57,8 +57,7 @@ server_common_group:
       # Gen pass by python -c 'import crypt; print(crypt.crypt("This is my Password", "$1$blackgolem$"))'
       password: "{{ users.sbog | password_hash('sha512', users.salt) }}"
       ssh_keys:
-        - name: https://github.com/sorrowless.keys
-          state: present
+        - https://github.com/sorrowless.keys
 
 # Sudoers vars
 sudoer_rewrite_sudoers_file: True

@@ -1,0 +1,12 @@
+---
+# Let's Encrypt vars
+tls_host:
+  - type: acme
+    acme_domains:
+      - "{{ ansible_host }}"
+    acme_post_hook: 'ipsec rereadall || true'
+    acme_challenge: dns
+    acme_ch_dns_type: dns_cf
+    acme_ch_dns_vars:
+      CF_Email: "{{ vault_tls_host.acme_ch_dns_vars.CF_Email }}"
+      CF_Key: "{{ vault_tls_host.acme_ch_dns_vars.CF_Key }}"

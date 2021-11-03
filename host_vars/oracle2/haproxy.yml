@@ -15,7 +15,7 @@ haproxy_conf: |
   backend https
       mode tcp
       timeout server 2h
-      server https-localhost 127.0.0.1:4433
+      server https-localhost 127.0.0.1:4443
 
   backend openvpn
       mode tcp

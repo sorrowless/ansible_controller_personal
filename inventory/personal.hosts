@@ -1,6 +1,6 @@
-personal_vps
-personal_vps_small
-testhost
+pq_hosting
+oracle1
+oracle2
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -16,43 +16,46 @@ ansible_python_interpreter=/usr/bin/python3
 [webservers]
 
 [tls]
-personal_vps
+pq_hosting
+oracle1
+oracle2
 
 [websites]
-personal_vps
+pq_hosting
 
 [mx]
-personal_vps
+pq_hosting
 
 [backups]
-personal_vps
+pq_hosting
 
 [nginx]
-personal_vps
+pq_hosting
 
 [bitwarden_servers]
-personal_vps
+pq_hosting
 
 [vpn_servers]
-personal_vps_small
-personal_vps
+pq_hosting
+oracle1
+oracle2
 
 [ipsec_vpn_servers]
-personal_vps
-personal_vps_small
+pq_hosting
+oracle1
+oracle2
 
 [haproxy_servers]
-personal_vps_small
-personal_vps
+pq_hosting
 
 [mtgproxy_servers]
-personal_vps
+pq_hosting
 
 [davical_servers]
-personal_vps
+pq_hosting
 
 [postgresql_servers]
-personal_vps
+pq_hosting
 
 [taskd_servers]
-personal_vps
+pq_hosting
