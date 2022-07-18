@@ -1,5 +1,5 @@
 ---
-tls_basedir: "{{ tls_host.acme_domains[0] }}"
+tls_basedir: "{{ tls_host[0].acme_domains[0] }}"
 # This name gotten from role defaults
 site_hostname: sbog.ru
 website_domainname: "{{ site_hostname }}"
