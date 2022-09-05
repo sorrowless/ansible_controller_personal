@@ -1,5 +1,0 @@
----
-taskd:
-  cert:
-    cn: task.sbog.ru
-  user: Stan Bogatkin

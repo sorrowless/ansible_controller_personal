@@ -59,3 +59,9 @@ pq_hosting
 
 [taskd_servers]
 pq_hosting
+
+[monitoring_clients]
+oracle1
+
+[monitoring_servers]
+oracle1

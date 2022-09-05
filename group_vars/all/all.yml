@@ -36,6 +36,8 @@ sshd:
 # TLS group vars
 tls_group:
   type: acme
+  acme_account_email: s@sbog.ru
+  acme_default_ca: letsencrypt
 
 git_username: sorrowless
 git_email: "{{ vault_git_email }}"
