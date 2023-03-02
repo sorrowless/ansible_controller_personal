@@ -1,6 +1,4 @@
-pq_hosting
-oracle1
-oracle2
+racknerd
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -16,52 +14,30 @@ ansible_python_interpreter=/usr/bin/python3
 [webservers]
 
 [tls]
-pq_hosting
-oracle1
-oracle2
+racknerd
 
 [websites]
-pq_hosting
-
 [mx]
-pq_hosting
-
 [backups]
-pq_hosting
 
 [nginx]
-pq_hosting
+racknerd
 
 [bitwarden_servers]
-pq_hosting
+racknerd
 
 [vpn_servers]
-pq_hosting
-oracle1
-oracle2
+racknerd
 
 [ipsec_vpn_servers]
-pq_hosting
-oracle1
-oracle2
+racknerd
 
 [haproxy_servers]
-pq_hosting
+racknerd
 
 [mtgproxy_servers]
-pq_hosting
-
 [davical_servers]
-pq_hosting
-
 [postgresql_servers]
-pq_hosting
-
 [taskd_servers]
-pq_hosting
-
 [monitoring_clients]
-oracle1
-
 [monitoring_servers]
-oracle1

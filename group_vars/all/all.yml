@@ -36,28 +36,37 @@ sshd:
 # TLS group vars
 tls_group:
   type: acme
-  acme_account_email: s@sbog.ru
+  acme_account_email: s@sbog.org
   acme_default_ca: letsencrypt
 
-git_username: sorrowless
+git_username: Stan Bogatkin
 git_email: "{{ vault_git_email }}"
 
 iptables:
   group_allowed_tcp_ports: ["{{ sshd.Port }}"]
   flush_all: True
 
-users: "{{ vault_users }}"
 server_common_group:
   dns_hostname: server
   users:
-    user_group_1:
+    sbog:
       name: sbog
       comment: "Administrator. Ask anything at sbog@sbog.ru."
       groups: sudo
       remove: no
       state: present
       # Gen pass by python -c 'import crypt; print(crypt.crypt("This is my Password", "$1$blackgolem$"))'
-      password: "{{ users.sbog | password_hash('sha512', users.salt) }}"
+      password: "{{ vault_users.sbog | password_hash('sha512', vault_users.salt) }}"
+      ssh_keys:
+        - https://github.com/sorrowless.keys
+    deployer:
+      name: deployer
+      comment: "Administrator. Ask anything at sbog@sbog.ru."
+      groups: sudo
+      remove: no
+      state: present
+      # Gen pass by python -c 'import crypt; print(crypt.crypt("This is my Password", "$1$blackgolem$"))'
+      password: "{{ vault_users.deployer | password_hash('sha512', vault_users.salt) }}"
       ssh_keys:
         - https://github.com/sorrowless.keys
 
@@ -82,17 +91,3 @@ sudoer_specs:
     operators: ALL
     tags: PASSWD
     commands: ALL
-    #  - name: 30-deployer
-    #    comment: "Deployer can do anything without password"
-    #    users: deployer
-    #    hosts: ALL
-    #    operators: ALL
-    #    tags: NOPASSWD
-    #    commands: ALL
-    #  - name: 40-sensu
-    #    comment: "Sensu can restart services by running systemctl commands"
-    #    users: sensu
-    #    hosts: ALL
-    #    operators: ALL
-    #    tags: NOPASSWD
-    #    commands: "/bin/systemctl *"
