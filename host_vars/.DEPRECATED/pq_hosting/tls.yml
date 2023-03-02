@@ -1,0 +1,58 @@
+---
+# Let's Encrypt vars
+tls_host:
+  #  - type: acme
+  #    acme_domains:
+  #      - mail.sbog.ru
+  #      - smtp.sbog.ru
+  #      - imap.sbog.ru
+  #      - pop.sbog.ru
+  #      - pop3.sbog.ru
+  #      - pa.mail.sbog.ru
+  #      - sbog.ru
+  #      - www.sbog.ru
+  #      - blog.sbog.ru
+  #      - rss.sbog.ru
+  #      - beardly.sbog.ru
+  #      - bw.sbog.ru
+  #      - cal.sbog.ru
+  #    acme_post_hook: 'systemctl reload nginx'
+  #    acme_challenge: dns
+  #    acme_ch_dns_type: dns_cf
+  #    acme_ch_dns_vars:
+  #      CF_Email: "{{ vault_tls_host.acme_ch_dns_vars.CF_Email }}"
+  #      CF_Key: "{{ vault_tls_host.acme_ch_dns_vars.CF_Key }}"
+  - type: acme
+    acme_domains:
+      - ipsec.sbog.ru
+    acme_pre_hook: ''
+    acme_default_ca: letsencrypt
+    acme_post_hook: 'ipsec reload'
+    target_ca_path: "/etc/ipsec.d/cacerts/ca.pem"
+    target_cert_path: "/etc/ipsec.d/certs/cert.pem"
+    target_key_path: "/etc/ipsec.d/private/private.pem"
+    acme_challenge: dns
+    acme_ch_dns_type: dns_cf
+    acme_ch_dns_vars:
+      CF_Email: "{{ vault_tls_host.acme_ch_dns_vars.CF_Email }}"
+      CF_Key: "{{ vault_tls_host.acme_ch_dns_vars.CF_Key }}"
+      #- type: acme
+      #  acme_domains:
+      #    - vault.sbog.ru
+      #  acme_post_hook: ''
+      #  acme_challenge: dns
+      #  acme_ch_dns_type: dns_cf
+      #  acme_ch_dns_vars:
+      #    CF_Email: "{{ vault_tls_host.acme_ch_dns_vars.CF_Email }}"
+      #    CF_Key: "{{ vault_tls_host.acme_ch_dns_vars.CF_Key }}"
+  - type: acme
+    acme_domains:
+      - sbog.org
+    acme_pre_hook: ''
+    acme_default_ca: letsencrypt
+    acme_post_hook: ''
+    acme_challenge: dns
+    acme_ch_dns_type: dns_porkbun
+    acme_ch_dns_vars:
+      PORKBUN_API_KEY: "{{ vault_tls_host.acme_ch_dns_vars.PORKBUN_API_KEY }}"
+      PORKBUN_SECRET_API_KEY: "{{ vault_tls_host.acme_ch_dns_vars.PORKBUN_SECRET_API_KEY }}"

@@ -1,0 +1,9 @@
+---
+ipsec_server_name: ipsec.sbog.ru
+ipsec_override_iptables: no
+ipsec_vpn_network: 10.77.0.0/16
+ipsec_cert_path: "cert.pem"
+ipsec_cacert_path: "chain.pem"
+ipsec_private_key_path: "private.pem"
+ipsec_clients: "{{ vault_ipsec_clients }}"
+ipsec_prefix: "ipsec_{{ ipsec_server_name }}"

@@ -1,0 +1,13 @@
+---
+placement: "RackNerd, US"
+ansible_host: 107.173.111.72
+ansible_port: "{{ sshd_port }}"
+ansible_user: sbog
+ansible_become: true
+
+iptables:
+  host_allowed_tcp_ports: [22, 80, 143, 909]
+  flush_all: True
+
+server_common_host:
+  dns_hostname: "us.sbog.org"
