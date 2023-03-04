@@ -41,3 +41,6 @@ racknerd
 [taskd_servers]
 [monitoring_clients]
 [monitoring_servers]
+
+[docker_hosts]
+racknerd

@@ -2,7 +2,7 @@
 # OpenVPN settings
 server_port: 1494
 protocol: tcp
-server_name: sbog.ru
+server_name: openvpn-us.sbog.org
 topology: subnet
 client_config_dir_path: /etc/openvpn/ccd
 persist_tun: True
@@ -12,7 +12,7 @@ allow_masquerade: True
 use_tls_auth: True
 additional_pushes:
  - "redirect-gateway def1"
-real_server_name: sbog.ru
+real_server_name: openvpn-us.sbog.org
 vpn_network: 10.20.0.0
 vpn_netmask: 255.255.255.0
 vpn_cidr: 24
@@ -25,7 +25,7 @@ comp_lzo: False
 auth: SHA512
 cipher: AES-256-CBC
 syslog_name: openvpn
-cert_prefix: "vpn_sbog.ru_"
+cert_prefix: "openvpn-us.sbog.org_"
 # What to do with given client name. Valid values: issue, revoke
 keys_action: issue
 duplicate_cn: True
