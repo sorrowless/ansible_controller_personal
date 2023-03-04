@@ -1,4 +1,5 @@
 racknerd
+ruvds
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -15,6 +16,7 @@ ansible_python_interpreter=/usr/bin/python3
 
 [tls]
 racknerd
+ruvds
 
 [websites]
 [mx]
@@ -28,6 +30,7 @@ racknerd
 
 [vpn_servers]
 racknerd
+ruvds
 
 [ipsec_vpn_servers:children]
 vpn_servers
@@ -36,8 +39,6 @@ vpn_servers
 vpn_servers
 
 [haproxy_servers]
-racknerd
-
 [mtgproxy_servers]
 [davical_servers]
 [postgresql_servers]
@@ -47,3 +48,4 @@ racknerd
 
 [docker_hosts]
 racknerd
+ruvds

@@ -1,0 +1,12 @@
+---
+wireguard_directory: /etc/wireguard
+wireguard_server_url: wg-ru.sbog.org
+wireguard_server_port: 51820
+wireguard_peers_names:
+  - sbogMacbook14pro
+  - sbogIphone14pro
+  - olga
+wireguard_peers_dns: [8.8.8.8, 1.1.1.1]
+wireguard_internal_subnet: 10.10.105.0/24
+wireguard_allowed_ips: 0.0.0.0/0
+wireguard_docker_network_name: wg_network
