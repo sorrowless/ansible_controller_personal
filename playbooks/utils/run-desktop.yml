@@ -14,7 +14,7 @@
 - name: Install needed desktop things everywhere
   hosts: all
   vars_files:
-   - vars/dotfiles_vars.yml
+   - ../../vars/dotfiles_vars.yml
 
   pre_tasks:
     - name: Create user {{ username }} if does not exists
