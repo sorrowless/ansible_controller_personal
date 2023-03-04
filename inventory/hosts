@@ -29,8 +29,11 @@ racknerd
 [vpn_servers]
 racknerd
 
-[ipsec_vpn_servers]
-racknerd
+[ipsec_vpn_servers:children]
+vpn_servers
+
+[wireguard_vpn_servers:children]
+vpn_servers
 
 [haproxy_servers]
 racknerd

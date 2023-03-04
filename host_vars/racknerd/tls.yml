@@ -47,3 +47,14 @@ tls_host:
     acme_ch_dns_vars:
       PORKBUN_API_KEY: "{{ vault_tls_host.acme_ch_dns_vars.PORKBUN_API_KEY }}"
       PORKBUN_SECRET_API_KEY: "{{ vault_tls_host.acme_ch_dns_vars.PORKBUN_SECRET_API_KEY }}"
+  - type: acme
+    acme_domains:
+      - wg-us.sbog.org
+    acme_pre_hook: ''
+    acme_default_ca: letsencrypt
+    acme_post_hook: ''
+    acme_challenge: dns
+    acme_ch_dns_type: dns_porkbun
+    acme_ch_dns_vars:
+      PORKBUN_API_KEY: "{{ vault_tls_host.acme_ch_dns_vars.PORKBUN_API_KEY }}"
+      PORKBUN_SECRET_API_KEY: "{{ vault_tls_host.acme_ch_dns_vars.PORKBUN_SECRET_API_KEY }}"

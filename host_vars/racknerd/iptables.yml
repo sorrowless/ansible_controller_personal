@@ -1,8 +1,8 @@
 # Iptables rules
 ---
 iptables:
-  host_allowed_udp_ports: [1984]
-  host_allowed_tcp_ports: [22, 80, 443, 909]
+  host_allowed_udp_ports: [51820]
+  host_allowed_tcp_ports: [22, 80, 443, 909, 1494]
   flush_all: True
   raw_rules:
     #- "-P INPUT DROP"
@@ -25,6 +25,10 @@ iptables:
     - "-t mangle -A FORWARD --match policy --pol ipsec --dir in -s {{ ipsec_vpn_network }} -p tcp -m tcp --tcp-flags SYN,RST SYN -m tcpmss --mss 1361:1536 -j TCPMSS --set-mss 1360 -m comment --comment 'reduce-MTU/MSS-values-for-dumb-VPN-clients'"
     - "-t nat -A POSTROUTING -s {{ ipsec_vpn_network }} -m policy --pol ipsec --dir out -j ACCEPT -m comment --comment 'exempt-IPsec-traffic-from-masquerading'"
     - "-t nat -A POSTROUTING -s {{ ipsec_vpn_network }} -j MASQUERADE -m comment --comment 'masquerade-VPN-traffic-over-eth0-etc'"
+    - "-A INPUT -s 10.20.0.0/24 -j ACCEPT -m comment --comment 'openvpn-input-allow'"
+    - "-t nat -A POSTROUTING -s 10.20.0.0/24 -j MASQUERADE -m comment --comment 'openvpn-nat'"
+    - "-A FORWARD -s 10.20.0.0/24 -j ACCEPT -m comment --comment 'allow-openvpn-packets-forwarding'"
+    - "-A FORWARD -d 10.20.0.0/24 -j ACCEPT -m comment --comment 'allow-openvpn-packets-forwarding'"
       #- "-A INPUT   -j DROP -m comment --comment 'fall-through-to-drop-any-other-input-traffic'"
       #- "-A FORWARD -j DROP -m comment --comment 'fall-through-to-drop-any-other-forward-traffic'"
 

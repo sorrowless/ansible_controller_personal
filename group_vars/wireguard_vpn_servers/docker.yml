@@ -1,0 +1,8 @@
+---
+# Docker config
+docker_additional_networks:
+  - name: wg_network
+    bridge_name: wg_bridge
+    subnet: 10.11.11.0/24
+    gateway: 10.11.11.1
+    iprange: 10.11.11.128/25
