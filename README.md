@@ -1,5 +1,4 @@
-sbog.controller
-===============
+# sbog.controller
 
 Base framework to create further Ansible deploys for organization. It's nothing
 more but just a carcass to further developing deployments.
@@ -16,7 +15,7 @@ None
 
 This will install all needed roles to `roles` directory:
 
-```
+```bash
 ./tools/get-roles.sh
 ```
 
@@ -24,7 +23,7 @@ Then you just need to create according group/host vars, inventory files and run
 your playbooks.
 In case you just need to know current nodes list, run
 
-```
+```bash
 ./tools/nodes_list.sh
 ```
 
@@ -32,24 +31,25 @@ Some examples can be found in `host_vars/.examples` directory.
 In case you want to faster deploys there is a playbook which downloads mitogen
 and installed it locally and configures as default strategy. You can run it by
 
-```
+```bash
 ansible-playbook tools/switch-to-mitogen.yml
 ```
 
 #### Playbooks directory structure
 The directory has the following structure:
-- backups 
-- configuration 
-- databases 
-- exporters 
-- logs 
-- monitoring 
-- services 
-- utils 
+- backups
+- configuration
+- databases
+- exporters
+- logs
+- monitoring
+- services
+- utils
 - vpns
 - full-files
 
-Playbooks in every directory run exactly one included role. But full-files includes entire run-files from subdirectories.
+Playbooks in every directory run exactly one included role. But full-files
+includes entire run-files from subdirectories.
 
 ```yaml
 # example run-bitwarden-full.yml
