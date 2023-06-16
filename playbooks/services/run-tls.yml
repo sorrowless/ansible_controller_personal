@@ -10,8 +10,8 @@
 ---
 - name: Configure target servers
   hosts: tls
-  become: yes
-  become_user: root
+  #serial: 1
+  remote_user: root
 
   roles:
     - { role: sorrowless.tls, tags: ['tls'] }

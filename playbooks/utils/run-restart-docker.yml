@@ -1,15 +1,14 @@
 #!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
 #
-# Run it like usual executable script:
+# Playbook to restart docker on target nodes. Run it like usual executable
+# script:
 #
-# > ./run-server-common.yml
+# > ./run-minimal.yml
 #
----
-- name: Configure iptables
+- name: Restart docker
   hosts: iptables
-
-  roles:
-    - { role: sorrowless.iptables, tags: ['iptables'] }
+  become: yes
+  remote_user: root
 
   tasks:
     - name: Restart docker
