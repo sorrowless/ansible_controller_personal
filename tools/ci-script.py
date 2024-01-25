@@ -10,13 +10,14 @@ import subprocess
 import yaml
 import sys
 
-from git import Repo
+from git import Repo, exc
 from ansible.parsing.dataloader import DataLoader
 from ansible.inventory.manager import InventoryManager
 
 
 def run_cmd(args: list) -> str:
     '''Run given command'''
+    args = [ arg.replace("'", "").replace('"', "") for arg in args ]
     with subprocess.Popen(args, stderr=subprocess.STDOUT) as out:
         stdout, stderr = out.communicate()
 
@@ -98,7 +99,12 @@ def difference_inventory(target_branch: str, changed_inventory: list) -> dict:
         new_inventory = InventoryManager(loader = DataLoader(), sources=inventory)
         new_inventory = new_inventory.get_groups_dict()
 
-        old_file = Repo().git.show(target_branch+":"+inventory)
+        try:
+            old_file = Repo().git.show(target_branch+":"+inventory)
+        except exc.GitCommandError:
+            print(f"Git diff failed for inventory-file {inventory}")
+            continue
+
         with open("tmp", "w", encoding='utf-8') as f_hand:
             f_hand.write(old_file)
         old_file = InventoryManager(loader = DataLoader(), sources="tmp")
@@ -199,8 +205,15 @@ def generate_run_mapping_run_files(changed_files: list, config: dict) -> dict:
         
         for block in playbook_tasks: 
             run_file_hosts = block.get("hosts", None)
-            if run_file_hosts:
+            if not run_file_hosts:
+                continue
+            
+            if isinstance(run_file_hosts, str):
                 run_files_mapping[file]["limits"].add(run_file_hosts)
+            elif isinstance(run_file_hosts, list):
+                run_files_mapping[file]["limits"].update(run_file_hosts)
+            else:
+                raise Exception(f"Unknown type of hosts field in file - {file}")
     
     return run_files_mapping
 
