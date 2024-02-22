@@ -1,0 +1,17 @@
+---
+placement: "Yandex, RU"
+ansible_host: 158.160.144.37
+ansible_port: "{{ sshd_port }}"
+ansible_user: sbog
+ansible_become: true
+
+server_common_host:
+  dns_hostname: "ru.sbog.org"
+  packages:
+    - atop
+    - sysstat
+    - iotop
+    - iftop
+    - python3
+    - git
+    - curl

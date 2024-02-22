@@ -1,5 +1,6 @@
 racknerd
 ruvds
+yandex
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -31,6 +32,7 @@ racknerd
 [vpn_servers]
 racknerd
 ruvds
+yandex
 
 [ipsec_vpn_servers:children]
 vpn_servers
@@ -51,6 +53,7 @@ racknerd
 ruvds
 
 [server_common]
+yandex
 
 [iptables:children]
 server_common
@@ -66,3 +69,6 @@ server_common
 
 [atop:children]
 server_common
+
+[backup_collectors]
+racknerd

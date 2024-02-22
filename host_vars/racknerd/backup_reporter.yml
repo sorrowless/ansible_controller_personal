@@ -1,0 +1,54 @@
+---
+backup_reporter_bucket:
+  - s3_path: s3://BACKUP_BITWARDEN/metadata/metadata.json
+    aws_access_key_id: "{{ vault_backup_reporter_bucket[0].aws_access_key_id }}"
+    aws_secret_access_key: "{{ vault_backup_reporter_bucket[0].aws_secret_access_key }}"
+    aws_region: ru-1
+    aws_endpoint_url: https://s3.ru-1.storage.selcloud.ru
+  - s3_path: s3://BACKUP_MAIN_BASE/metadata/metadata.json
+    aws_access_key_id: "{{ vault_backup_reporter_bucket[1].aws_access_key_id }}"
+    aws_secret_access_key: "{{ vault_backup_reporter_bucket[1].aws_secret_access_key }}"
+    aws_region: ru-1
+    aws_endpoint_url: https://s3.ru-1.storage.selcloud.ru
+  - s3_path: s3://backup_wrobel/metadata/metadata.json
+    aws_access_key_id: "{{ vault_backup_reporter_bucket[2].aws_access_key_id }}"
+    aws_secret_access_key: "{{ vault_backup_reporter_bucket[2].aws_secret_access_key }}"
+    aws_region: ru-1
+    aws_endpoint_url: https://s3.ru-1.storage.selcloud.ru
+  - s3_path: s3://backup_camp_mosreg/metadata/metadata.json
+    aws_access_key_id: "{{ vault_backup_reporter_bucket[3].aws_access_key_id }}"
+    aws_secret_access_key: "{{ vault_backup_reporter_bucket[3].aws_secret_access_key }}"
+    aws_region: ru-1
+    aws_endpoint_url: https://s3.ru-1.storage.selcloud.ru
+  - s3_path: "s3://oomag-bitwarden-db-backup/metadata.json"
+    aws_access_key_id: "{{ vault_backup_reporter_bucket[4].aws_access_key_id }}"
+    aws_secret_access_key: "{{ vault_backup_reporter_bucket[4].aws_secret_access_key }}"
+    aws_region: "eu-west-1"
+  - s3_path: "s3://embily-production-core-backup/db_backups/metadata.json"
+    aws_access_key_id: "{{ vault_backup_reporter_bucket[5].aws_access_key_id }}"
+    aws_secret_access_key: "{{ vault_backup_reporter_bucket[5].aws_secret_access_key }}"
+    aws_region: "eu-west-1"
+  - s3_path: "s3://embily-staging-core-backup/db_backups/metadata.json"
+    aws_access_key_id: "{{ vault_backup_reporter_bucket[6].aws_access_key_id }}"
+    aws_secret_access_key: "{{ vault_backup_reporter_bucket[6].aws_secret_access_key }}"
+    aws_region: "eu-west-1"
+  - s3_path: "s3://embily-production-backend-backup/db_backups/metadata.json"
+    aws_access_key_id: "{{ vault_backup_reporter_bucket[7].aws_access_key_id }}"
+    aws_secret_access_key: "{{ vault_backup_reporter_bucket[7].aws_secret_access_key }}"
+    aws_region: "eu-west-1"
+  - s3_path: "s3://embily-staging-backend-backup/db_backups/metadata.json"
+    aws_access_key_id: "{{ vault_backup_reporter_bucket[8].aws_access_key_id }}"
+    aws_secret_access_key: "{{ vault_backup_reporter_bucket[8].aws_secret_access_key }}"
+    aws_region: "eu-west-1"
+  - s3_path: s3://cryptoprocessing-mainnet-backups/db_backups/metadata/metadata.json
+    aws_access_key_id: "{{ vault_backup_reporter_bucket[9].aws_access_key_id }}"
+    aws_secret_access_key: "{{ vault_backup_reporter_bucket[9].aws_secret_access_key }}"
+    aws_region: eu-west-1
+  - s3_path: s3://cryptoprocessing-staging-backups/db_backups/metadata/metadata.json
+    aws_access_key_id: "{{ vault_backup_reporter_bucket[10].aws_access_key_id }}"
+    aws_secret_access_key: "{{ vault_backup_reporter_bucket[10].aws_secret_access_key }}"
+    aws_region: eu-west-1
+  - s3_path: s3://cryptoprocessing-testnet-backups/db_backups/metadata/metadata.json
+    aws_access_key_id: "{{ vault_backup_reporter_bucket[11].aws_access_key_id }}"
+    aws_secret_access_key: "{{ vault_backup_reporter_bucket[11].aws_secret_access_key }}"
+    aws_region: eu-west-1

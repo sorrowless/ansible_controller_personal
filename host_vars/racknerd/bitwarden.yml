@@ -1,0 +1,7 @@
+---
+bw_image: vaultwarden/server:1.31.0
+# Postgres as a db
+pg4bw_image: postgres:14.10-bullseye
+pg4bw_container_name: bitwarden-db
+pg4bw_data: /var/bitwarden-db
+pg4bw_init_user_db_dir: /var/bitwarden-db-init

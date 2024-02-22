@@ -1,0 +1,10 @@
+---
+backup_reporter_config_dir: "/etc/backup-reporter"
+backup_reporter_google_spreadsheet_credentials: "{{ vault_backup_reporter_google_spreadsheet_credentials }}"
+backup_reporter_docker_postgres: false
+backup_reporter_container_name: database
+backup_reporter_collector: true
+backup_reporter_sheet_owner: "stabog.tmb@gmail.com"
+backup_reporter_spreadsheet_name: "Backup-Reports"
+backup_reporter_worksheet_name: "Customers"
+
