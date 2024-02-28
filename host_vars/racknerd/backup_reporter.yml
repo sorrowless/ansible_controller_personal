@@ -52,3 +52,8 @@ backup_reporter_bucket:
     aws_access_key_id: "{{ vault_backup_reporter_bucket[11].aws_access_key_id }}"
     aws_secret_access_key: "{{ vault_backup_reporter_bucket[11].aws_secret_access_key }}"
     aws_region: eu-west-1
+  - s3_path: s3://bckp-personal-racknerd-vaultwarden/metadata/metadata.json
+    aws_endpoint_url: https://s3.ru-1.storage.selcloud.ru
+    aws_region: ru-1
+    aws_access_key_id: "{{ vault_backup_reporter_bucket[12].aws_access_key_id }}"
+    aws_secret_access_key: "{{ vault_backup_reporter_bucket[12].aws_secret_access_key }}"
