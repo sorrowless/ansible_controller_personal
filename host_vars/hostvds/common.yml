@@ -1,0 +1,9 @@
+---
+placement: "HostVDS, US"
+ansible_host: 45.152.113.58
+ansible_port: "{{ sshd_port }}"
+ansible_user: deployer
+ansible_become: true
+
+server_common_host:
+  dns_hostname: "us02.sbog.org"

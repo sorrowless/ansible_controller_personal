@@ -1,6 +1,7 @@
 racknerd
 ruvds
 yandex
+hostvds
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -33,6 +34,7 @@ racknerd
 racknerd
 ruvds
 yandex
+hostvds
 
 [ipsec_vpn_servers:children]
 vpn_servers
@@ -51,9 +53,11 @@ vpn_servers
 [docker_hosts]
 racknerd
 ruvds
+hostvds
 
 [server_common]
 yandex
+hostvds
 
 [iptables:children]
 server_common
