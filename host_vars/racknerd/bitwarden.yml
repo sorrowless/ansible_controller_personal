@@ -14,7 +14,7 @@ pg4bw_postgres_password: "{{ vault_pg4bw_postgres_password }}"
 pg4bw_vaultwarden_user: "{{ vault_pg4bw_vaultwarden_user }}"
 pg4bw_vaultwarden_password: "{{ vault_pg4bw_vaultwarden_password }}"
 
-bw_image: vaultwarden/server:1.30.3
+bw_image: vaultwarden/server:1.32.1
 # Postgres as a db
 pg4bw_image: "harbor.oom.ag/library/postgres_with_wal-g:14.8"
 pg4bw_container_name: bitwarden-db
