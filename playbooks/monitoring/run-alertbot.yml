@@ -1,0 +1,79 @@
+#!/usr/bin/env -S ansible-playbook
+#
+# Playbook to install and run alertbot container on
+# target nodes. Run it like usual executable script:
+#
+# > ./run-alertbot.yml
+
+---
+- name: Configure target servers
+  hosts: alert_bot_cluster
+  become: yes
+  become_user: root
+  tasks:
+    - name: Generate config file
+      set_fact:
+        alertbot_config: |
+          chats:
+          {{ alertbot_chats | to_nice_yaml }}
+
+          acl:
+          {{ alertbot_acl | to_nice_yaml | indent( width=2, first=True) }}
+
+          {% if alertbot_alert_template is defined %}
+          alert_template: |
+          {{ alertbot_alert_template | indent( width=2, first=True) }}
+          {% endif %}
+
+          {% if alertbot_resolve_template is defined %}
+          resolve_template: |
+          {{ alertbot_resolve_template | indent( width=2, first=True) }}
+          {% endif %}
+
+    - name: Check if config-file has changes
+      check_mode: yes
+      register: config_changes
+      docker_config:
+        name: alertbot_config
+        data: "{{ alertbot_config }}"
+
+    - name: Remove alertbot service
+      docker_stack:
+        state: absent
+        name: alert-stack
+      when: config_changes.changed
+
+    - name: Update alertbot config
+      docker_config:
+        name: alertbot_config
+        data: "{{ alertbot_config }}"
+      when: config_changes.changed
+
+    - name: Setup alertbot
+      docker_stack:
+        state: present
+        name: alert-stack
+        compose:
+          - version: "3.8"
+            services:
+              alertmanager_tgbot:
+                image: "onemind914/alertmanager-tgbot:{{ alertbot_image_tag | default('latest') }}"
+                environment:
+                  API_ID: "{{ alertbot_api_id }}"
+                  API_HASH: "{{ alertbot_api_hash }}"
+                  PHONE_NUMBER: "{{ alertbot_phone_number }}"
+                  CLIENT_NAME: "{{ alertbot_client_name }}"
+                  ALERTMANAGER_ADDRESS: "{{ alertbot_alertmanager_address }}"
+                  GRAFANA_AUTH_TOKEN: "{{ alertbot_grafana_auth_token }}"
+                volumes:
+                  - "{{ alertbot_conf_dir }}:/app/conf"
+                ports:
+                  - "{{ alertbot_listening_addr | default('8000') }}:8000"
+                configs:
+                  - source: alertbot_config
+                    target: /app/conf/conf.yml
+                networks: "{{ alertbot_docker_networks.keys() | list }}"
+            networks: "{{ alertbot_docker_networks }}"
+            configs:
+              alertbot_config:
+                external: true
