@@ -1,0 +1,28 @@
+---
+yubico_client_id: "{{ vault_yubico_client_id }}"
+yubico_secret_key: "{{ vault_yubico_secret_key }}"
+smtp_host: "{{ vault_smtp_host }}"
+smtp_from: "{{ vault_smtp_from }}"
+smtp_port: 587
+smtp_security: force_tls
+smtp_username: "{{ vault_smtp_username }}"
+smtp_password: "{{ vault_smtp_password }}"
+domain: "{{ vault_domain }}"
+signups_allowed: false
+# New data
+pg4bw_postgres_password: "{{ vault_pg4bw_postgres_password }}"
+pg4bw_vaultwarden_user: "{{ vault_pg4bw_vaultwarden_user }}"
+pg4bw_vaultwarden_password: "{{ vault_pg4bw_vaultwarden_password }}"
+
+bw_image: vaultwarden/server:1.32.1
+# Postgres as a db
+pg4bw_image: "harbor.oom.ag/library/postgres_with_wal-g:14.8"
+pg4bw_container_name: bitwarden-db
+pg4bw_data: /var/bitwarden-db
+pg4bw_init_user_db_dir: /var/bitwarden-db-init
+
+pg4bw_aws_key: "{{ vault_pg4bw_aws_key }}"
+pg4bw_aws_secret: "{{ vault_pg4bw_aws_secret }}"
+pg4bw_aws_region: "{{ vault_pg4bw_aws_region }}"
+pg4bw_aws_endpoint: "{{ vault_pg4bw_aws_endpoint }}"
+pg4bw_s3_bucket: "{{ vault_pg4bw_s3_bucket }}"

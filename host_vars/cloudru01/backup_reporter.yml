@@ -1,0 +1,2 @@
+---
+backup_reporter_bucket: "{{ vault_backup_reporter_bucket }}"

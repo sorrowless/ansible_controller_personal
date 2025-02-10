@@ -1,0 +1,17 @@
+---
+placement: "Cloud.ru, RU"
+ansible_host: 213.171.24.21
+ansible_port: "{{ sshd_port }}"
+ansible_user: sbog
+ansible_become: true
+
+server_common_host:
+  dns_hostname: "ru01.sbog.org"
+  packages:
+    - atop
+    - sysstat
+    - iotop
+    - iftop
+    - python3
+    - git
+    - curl

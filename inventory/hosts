@@ -1,7 +1,7 @@
-racknerd
-ruvds
-yandex
+cloudru01
 hostvds
+hostvds-tetushkin
+racknerd
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -18,7 +18,6 @@ ansible_python_interpreter=/usr/bin/python3
 
 [tls]
 racknerd
-ruvds
 
 [websites]
 [mx]
@@ -32,9 +31,8 @@ racknerd
 
 [vpn_servers]
 racknerd
-ruvds
-yandex
 hostvds
+hostvds-tetushkin
 
 [ipsec_vpn_servers:children]
 vpn_servers
@@ -51,13 +49,15 @@ vpn_servers
 [monitoring_servers]
 
 [docker_hosts]
+cloudru01
 racknerd
-ruvds
 hostvds
+hostvds-tetushkin
 
 [server_common]
-yandex
+cloudru01
 hostvds
+hostvds-tetushkin
 
 [iptables:children]
 server_common
