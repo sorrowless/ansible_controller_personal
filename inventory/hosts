@@ -1,7 +1,7 @@
-cloudru01
-hostvds
-hostvds-tetushkin
-racknerd
+ru01.sbog.org
+us01.sbog.org
+us02.sbog.org
+us03.sbog.org
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -17,22 +17,23 @@ ansible_python_interpreter=/usr/bin/python3
 [webservers]
 
 [tls]
-racknerd
+us03.sbog.org
 
 [websites]
 [mx]
 [backups]
 
 [nginx]
-racknerd
+us03.sbog.org
 
 [bitwarden_servers]
-racknerd
+us03.sbog.org
 
 [vpn_servers]
-racknerd
-hostvds
-hostvds-tetushkin
+ru01.sbog.org
+us01.sbog.org
+us02.sbog.org
+us03.sbog.org
 
 [ipsec_vpn_servers:children]
 vpn_servers
@@ -49,15 +50,16 @@ vpn_servers
 [monitoring_servers]
 
 [docker_hosts]
-cloudru01
-racknerd
-hostvds
-hostvds-tetushkin
+ru01.sbog.org
+us01.sbog.org
+us02.sbog.org
+us03.sbog.org
 
 [server_common]
-cloudru01
-hostvds
-hostvds-tetushkin
+ru01.sbog.org
+us01.sbog.org
+us02.sbog.org
+us03.sbog.org
 
 [iptables:children]
 server_common
@@ -75,4 +77,19 @@ server_common
 server_common
 
 [backup_collectors]
-racknerd
+us03.sbog.org
+
+[vpn_bot_servers]
+ru01.sbog.org
+
+[traefik]
+ru01.sbog.org
+us01.sbog.org
+us02.sbog.org
+us03.sbog.org
+
+[3x-ui-servers]
+ru01.sbog.org
+us01.sbog.org
+us02.sbog.org
+us03.sbog.org

@@ -1,6 +1,7 @@
 ---
 placement: "Cloud.ru, RU"
 ansible_host: 213.171.24.21
+ansible_hostname: ru01.sbog.org
 ansible_port: "{{ sshd_port }}"
 ansible_user: sbog
 ansible_become: true

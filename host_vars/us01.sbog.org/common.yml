@@ -1,12 +1,12 @@
 ---
-placement: "HostVDS, US"
+placement: "HostVDS, US, Oleg"
 ansible_host: 194.113.245.49
 ansible_port: "{{ sshd_port }}"
 ansible_user: sbog
 ansible_become: true
 
 server_common_host:
-  dns_hostname: "us-hostvds-tetushkin.sbog.org"
+  dns_hostname: "us01.sbog.org"
   packages:
     - atop
     - sysstat
