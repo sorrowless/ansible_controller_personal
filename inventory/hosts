@@ -7,6 +7,8 @@ us03.sbog.org
 ansible_python_interpreter=/usr/bin/python3
 
 [redis_servers]
+ru01.sbog.org
+
 [rabbitmq_servers]
 [sensu_masters]
 [graphite]
@@ -93,3 +95,6 @@ ru01.sbog.org
 us01.sbog.org
 us02.sbog.org
 us03.sbog.org
+
+[wikijs-servers]
+ru01.sbog.org

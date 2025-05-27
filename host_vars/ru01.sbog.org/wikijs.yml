@@ -1,0 +1,11 @@
+---
+wikijs_web_host: wiki.sbog.ru
+wikijs_swarm_deploy:
+  labels:
+    - "traefik.enable=true"
+    - "traefik.docker.network={{ traefik_docker_network_name }}"
+    - "traefik.http.routers.wikijs.rule=Host(`{{ wikijs_web_host }}`)"
+    - "traefik.http.routers.wikijs.tls=true"
+    - "traefik.http.routers.wikijs.tls.certResolver=acmeDNS"
+    - "traefik.http.services.wikijs.loadbalancer.server.port=3000"
+    #- "traefik.http.middlewares.ssl-headers.headers.sslProxyHeaders=true"
