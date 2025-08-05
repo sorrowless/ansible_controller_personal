@@ -93,4 +93,4 @@ Apache 2.0
 
 #### Author Information
 
-Stanislaw Bogatkin (https://sbog.ru)
+[Stan Bogatkin](https://sbog.org)
