@@ -1,13 +1,16 @@
 ---
-ui3x_ports:
-  - 0.0.0.0:443:443
-ui3x_web_host: us03.vpn.sbog.ru
+ui3x_ports: []
+ui3x_web_host: x-web.us03.sbog.ru
+ui3x_vless_host: dl.google.com
 ui3x_swarm_deploy:
   labels:
     - "traefik.enable=true"
-    - "traefik.docker.network={{ traefik_docker_network_name }}"
+    - "traefik.swarm.network={{ traefik_docker_network_name }}"
     - "traefik.http.routers.3xui.rule=Host(`{{ ui3x_web_host }}`)"
     - "traefik.http.routers.3xui.tls=true"
     - "traefik.http.routers.3xui.tls.certResolver=acmeDNS"
     - "traefik.http.services.3xui.loadbalancer.server.port=2053"
-    #- "traefik.http.middlewares.ssl-headers.headers.sslProxyHeaders=true"
+    - "traefik.tcp.routers.vless.rule=HostSNI(`{{ ui3x_vless_host }}`)"
+    - "traefik.tcp.routers.vless.tls.passthrough=true"
+    - "traefik.tcp.routers.vless.entrypoints=websecure"
+    - "traefik.tcp.services.vless.loadbalancer.server.port=443"

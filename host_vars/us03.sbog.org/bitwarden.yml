@@ -15,6 +15,18 @@ pg4bw_vaultwarden_user: "{{ vault_pg4bw_vaultwarden_user }}"
 pg4bw_vaultwarden_password: "{{ vault_pg4bw_vaultwarden_password }}"
 
 bw_image: vaultwarden/server:1.34.1
+bw_network_name: tf_net
+bw_web_host: bw.sbog.org
+bw_swarm_deploy:
+  labels:
+    - "traefik.enable=true"
+    - "traefik.swarm.network={{ traefik_docker_network_name }}"
+    - "traefik.http.routers.bitwarden.rule=Host(`{{ bw_web_host }}`)"
+    - "traefik.http.routers.bitwarden.tls=true"
+    - "traefik.http.routers.bitwarden.tls.certResolver=acmeDNS"
+    - "traefik.http.services.bitwarden.loadbalancer.server.port=80"
+
+
 # Postgres as a db
 pg4bw_image: "harbor.oom.ag/library/postgres_with_wal-g:14.8"
 pg4bw_container_name: bitwarden-db
