@@ -10,3 +10,8 @@ traefik_swarm_manager: us02.sbog.org
 traefik_web_host: us02.sbog.ru
 
 traefik_global_basicauth: "{{ vault_traefik_global_basicauth }}"
+
+traefik_docker_networks:
+  tf_net:
+    name: "tf_net"
+    external: false

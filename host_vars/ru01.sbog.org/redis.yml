@@ -1,0 +1,15 @@
+---
+## Sentinel options
+redis_standalone: false
+redis_docker: true
+redis_sentinel_standalone: false
+redis_sentinel_docker: false
+
+redis_requirepass: "{{ vault_vpn_bot_redis_password }}"
+redis_docker_network_name: vpn-bot_default
+redis_docker_image: redis:7.0
+redis_container_name: vpn-bot-redis
+redis_save:
+- 180 1
+redis_appendonly: "yes"
+redis_dbfilename: dump.aof

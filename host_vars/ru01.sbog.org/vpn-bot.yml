@@ -1,5 +1,5 @@
 ---
-vpn_bot_image: harbor.oom.ag/library/vpn-bot:v0.14
+vpn_bot_image: harbor.oom.ag/library/vpn-bot:v0.28
 vpn_bot_api_id: "{{ vault_vpn_bot_api_id }}"
 vpn_bot_api_hash: "{{ vault_vpn_bot_api_hash }}"
 vpn_bot_client_name: vpn-bot
@@ -8,3 +8,8 @@ vpn_bot_listen_address: 127.0.0.1:8000
 
 vpn_bot_conf_dir: /etc/vpn_bot
 vpn_bot_conf: "{{ vault_vpn_bot_conf }}"
+
+vpn_bot_network: vpn-bot
+vpn_bot_redis_addr: vpn-bot-redis
+vpn_bot_redis_port: 6379
+vpn_bot_redis_password: "{{ vault_vpn_bot_redis_password }}"

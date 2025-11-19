@@ -1,9 +1,18 @@
 ---
 placement: "HostVDS, US, Eric"
-ansible_host: 45.152.113.58
+ansible_host: 31.59.139.185
 ansible_port: "{{ sshd_port }}"
 ansible_user: sbog
 ansible_become: true
 
 server_common_host:
   dns_hostname: "us02.sbog.org"
+  packages:
+    - atop
+    - sysstat
+    - iotop
+    - iftop
+    - python3
+    - git
+    - curl
+  motd: "It is a restricted area. Please, leave it now if you not supposed to be here.\n\n"

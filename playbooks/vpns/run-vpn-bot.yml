@@ -1,4 +1,4 @@
-#!/usr/bin/env -S ansible-playbook 
+#!/usr/bin/env -S ansible-playbook
 #
 # Playbook to install and run vpn-bot container on
 # target nodes. Run it like usual executable script:
@@ -11,7 +11,7 @@
   become: yes
   become_user: root
 
-  tasks:  
+  tasks:
     - name: Ensure config directory exists
       ansible.builtin.file:
         path: "{{ vpn_bot_conf_dir }}"
