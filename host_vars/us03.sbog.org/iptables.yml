@@ -2,12 +2,12 @@
 ---
 iptables:
   host_allowed_udp_ports: []
-  host_allowed_tcp_ports: [80, 443, 4443, 9933]
+  host_allowed_tcp_ports: [80, 443, 9933]
   flush_all: true
   raw_rules:
     - "-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT -m comment --comment 'accept-anything-already-accepted'"
     - "-A INPUT -i lo -j ACCEPT -m comment --comment 'accept-anything-on-the-loopback-interface'"
     - "-A INPUT -m state --state INVALID -j DROP -m comment --comment 'drop-invalid-packets'"
-    - "-A INPUT -p tcp -m multiport --dports 22,909,2080,2443 -s 52.215.11.244/32 -j ACCEPT -m comment --comment 'VPN-CP-IE-01-XTLS-AWS'"
-    - "-A INPUT -p tcp -m multiport --dports 22,909,2080,2443 -s 45.152.113.58/32 -j ACCEPT -m comment --comment 'VPN-BS-US-01-XTLS-HostVDS'"
-    - "-A INPUT -p tcp -m multiport --dports 22,909,2080,2443 -s 213.171.24.21/32 -j ACCEPT -m comment --comment 'VPN-BS-RU-01-XTLS-CLOUDRU'"
+    - "-A INPUT -p tcp -m multiport --dports 22,909 -s 52.215.11.244/32 -j ACCEPT -m comment --comment 'VPN-CP-IE-01-XTLS-AWS'"
+    - "-A INPUT -p tcp -m multiport --dports 22,909 -s 45.152.113.58/32 -j ACCEPT -m comment --comment 'VPN-BS-US-01-XTLS-HostVDS'"
+    - "-A INPUT -p tcp -m multiport --dports 22,909 -s 213.171.24.21/32 -j ACCEPT -m comment --comment 'VPN-BS-RU-01-XTLS-CLOUDRU'"
