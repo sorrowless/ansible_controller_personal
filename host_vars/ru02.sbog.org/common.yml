@@ -1,0 +1,9 @@
+---
+placement: "Rostelekom macmini, RU"
+ansible_host: 10.10.10.196
+ansible_port: "{{ sshd_port }}"
+ansible_user: sbog
+ansible_become: true
+
+server_common_host:
+  dns_hostname: "ru02.sbog.org"
