@@ -1,5 +1,4 @@
 ru01.sbog.org
-us01.sbog.org
 us02.sbog.org
 us03.sbog.org
 
@@ -33,7 +32,6 @@ us03.sbog.org
 
 [vpn_servers]
 ru01.sbog.org
-us01.sbog.org
 us02.sbog.org
 us03.sbog.org
 
@@ -53,13 +51,11 @@ vpn_servers
 
 [docker_hosts]
 ru01.sbog.org
-us01.sbog.org
 us02.sbog.org
 us03.sbog.org
 
 [server_common]
 ru01.sbog.org
-us01.sbog.org
 us02.sbog.org
 us03.sbog.org
 
@@ -86,13 +82,11 @@ ru01.sbog.org
 
 [traefik]
 ru01.sbog.org
-us01.sbog.org
 us02.sbog.org
 us03.sbog.org
 
 [3x-ui-servers]
 ru01.sbog.org
-us01.sbog.org
 us02.sbog.org
 us03.sbog.org
 
