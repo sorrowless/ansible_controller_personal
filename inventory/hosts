@@ -1,5 +1,5 @@
 ru01.sbog.org
-us02.sbog.org
+ru02.sbog.org
 us03.sbog.org
 
 [all:vars]
@@ -32,7 +32,6 @@ us03.sbog.org
 
 [vpn_servers]
 ru01.sbog.org
-us02.sbog.org
 us03.sbog.org
 
 [ipsec_vpn_servers:children]
@@ -51,12 +50,13 @@ vpn_servers
 
 [docker_hosts]
 ru01.sbog.org
-us02.sbog.org
 us03.sbog.org
+
+[docker_services]
+ru02.sbog.org
 
 [server_common]
 ru01.sbog.org
-us02.sbog.org
 us03.sbog.org
 
 [iptables:children]
@@ -82,12 +82,11 @@ ru01.sbog.org
 
 [traefik]
 ru01.sbog.org
-us02.sbog.org
+ru02.sbog.org
 us03.sbog.org
 
 [3x-ui-servers]
 ru01.sbog.org
-us02.sbog.org
 us03.sbog.org
 
 [wikijs-servers]
