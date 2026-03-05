@@ -1,0 +1,17 @@
+---
+placement: "Rostelekom router-pc, RU"
+ansible_host: 10.10.10.11
+ansible_port: 22
+sshd_port: 22
+ansible_user: sbog
+ansible_become: true
+
+server_common_host:
+  dns_hostname: "router-pc.sbog.org"
+  packages:
+    - atop
+    - sysstat
+    - iotop
+    - iftop
+    - git
+    - curl

@@ -1,6 +1,8 @@
 ru01.sbog.org
 ru02.sbog.org
+router-pc.sbog.org
 us03.sbog.org
+oom-services.sbog.org
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -29,10 +31,12 @@ us03.sbog.org
 
 [bitwarden_servers]
 us03.sbog.org
+oom-services.sbog.org
 
 [vpn_servers]
 ru01.sbog.org
 us03.sbog.org
+oom-services.sbog.org
 
 [ipsec_vpn_servers:children]
 vpn_servers
@@ -50,14 +54,18 @@ vpn_servers
 
 [docker_hosts]
 ru01.sbog.org
+router-pc.sbog.org
 us03.sbog.org
+oom-services.sbog.org
 
 [docker_services]
 ru02.sbog.org
 
 [server_common]
 ru01.sbog.org
+router-pc.sbog.org
 us03.sbog.org
+oom-services.sbog.org
 
 [iptables:children]
 server_common
@@ -83,11 +91,14 @@ ru01.sbog.org
 [traefik]
 ru01.sbog.org
 ru02.sbog.org
+router-pc.sbog.org
 us03.sbog.org
+oom-services.sbog.org
 
 [3x-ui-servers]
 ru01.sbog.org
 us03.sbog.org
+oom-services.sbog.org
 
 [wikijs-servers]
 ru01.sbog.org

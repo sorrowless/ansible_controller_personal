@@ -1,0 +1,30 @@
+---
+placement: "Cloud.ru, RU"
+ansible_host: 176.108.254.93
+ansible_hostname: oom-services.sbog.org
+ansible_port: "{{ sshd_port }}"
+ansible_user: sbog
+ansible_become: true
+
+server_common_host:
+  dns_hostname: "oom-services.sbog.org"
+  packages:
+    - atop
+    - sysstat
+    - iotop
+    - iftop
+    - python3
+    - git
+    - curl
+  users:
+    deployer:
+      name: deployer
+      comment: "Administrator. Ask anything at sbog@sbog.ru."
+      groups: sudo
+      remove: no
+      state: present
+      # Gen pass by python -c 'import crypt; print(crypt.crypt("This is my Password", "$1$blackgolem$"))'
+      password: "{{ vault_users.deployer | password_hash('sha512', vault_users.salt) }}"
+      ssh_keys:
+        - https://github.com/sorrowless.keys
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEC8hqIQxf21GCbFOj5WW05aSRBlqm6Tn5dj0dJBNDhy jony@ThinkPad

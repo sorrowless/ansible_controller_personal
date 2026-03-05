@@ -1,0 +1,49 @@
+---
+traefik_environment_vars:
+  - CF_API_EMAIL={{ vault_tls_host.acme_ch_dns_vars.CF_Email }}
+  - CF_API_KEY={{ vault_tls_host.acme_ch_dns_vars.CF_Key }}
+
+# On macs there is no root group
+traefik_host_group: staff
+traefik_host_user: sbog
+traefik_host_confdir: /Users/sbog/configs/traefik
+traefik_docker_network_name: 'tf_net_public'
+traefik_docker_networks:
+  tf_net_public:
+    name: "tf_net_public"
+    external: true
+traefik_swarm_cluster: true
+# traefik_swarm_manager value is inventory/hosts name, not actual DNS one
+traefik_swarm_manager: router-pc.sbog.org
+traefik_web_host: router-pc.sbog.org
+
+traefik_dynamic_confs:
+  global_basicauth.yml: "{{ vault_traefik_global_basicauth }}"
+
+traefik_swarm_deploy:
+  mode: global
+  labels:
+    # Enable traefik itself
+    - "traefik.enable=true"
+    - "traefik.swarm.network={{ traefik_docker_network_name }}"
+    # Enable dashboard
+    - "traefik.http.routers.dashboard.rule=Host(`{{ traefik_web_host }}`) && (PathPrefix(`/traefik/api`) || PathPrefix(`/traefik/dashboard`))"
+    - "traefik.http.routers.dashboard.service=api@internal"
+    # Use forward auth to protect dashboard and api
+    - "traefik.http.routers.dashboard.middlewares=forward-auth"
+    # - "traefik.http.routers.dashboard.middlewares=basic-auth@file"
+    - "traefik.http.routers.dashboard.entrypoints=websecure"
+    - "traefik.http.routers.dashboard.tls=true"
+    - "traefik.http.routers.dashboard.tls.certResolver=acmeDNS"
+    - "traefik.http.services.traefik.loadbalancer.server.port=9999"    # dummy port, https://doc.traefik.io/traefik/operations/dashboard/#secure-mode
+
+# Publish on host directly
+traefik_ports:
+  - target: 80
+    published: 80
+    protocol: tcp
+    mode: host
+  - target: 443
+    published: 443
+    protocol: tcp
+    mode: host
