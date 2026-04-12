@@ -1,0 +1,68 @@
+---
+# Alertmanager config
+alertmanager_docker_network_name: prom_network
+alertmanager_config_dir: /var/lib/alertmanager
+alertmanager_container_name: alertmanager
+alertmanager_command:
+- '--config.file=/etc/alertmanager/alertmanager.yml'
+- '--storage.path=/alertmanager'
+# High Availability
+# - '--cluster.peer={{ vmalertmanager_neighbor_node_01 }}:9094'
+# - '--cluster.advertise-address={{ ansible_ip }}:9094'
+# - '--cluster.gossip-interval=100ms'
+# - '--cluster.pushpull-interval=30s'
+alertmanager_stack_name: mon
+alertmanager_swarm_cluster: true
+vm_swarm_manager: router-pc.sbog.org
+alertmanager_swarm_deploy:
+  mode: replicated
+  replicas: 1
+  placement:
+    constraints: []
+
+alertmanager_config:
+  global:
+    resolve_timeout: 5m
+  templates:
+  - '/etc/alertmanager/template/*.tmpl'
+  route:
+    group_by: ['alertname', 'project']
+    group_wait: 2m30s
+    group_interval: 5m
+    repeat_interval: 60m
+    # Default receiver
+    receiver: Telegram-Personal
+    routes:
+    - receiver: Telegram-Personal
+      matchers:
+      - project = personal
+    - receiver: blackhole
+      matchers:
+      - alertname="PostgreSQLCacheHitRatio"
+  inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname']
+  - source_matchers:
+    - alertname=~"HypervisorIsDown|HostIsDown|CloudHostIsDown"
+    target_matchers:
+    - alertname=~"ExporterDown|PortIsClosed|ContainerIsDown|ScrapeTargetIsUnavailable"
+    equal: ['dns_hostname']
+  - source_match:
+      alertname: HypervisorIsDown
+    target_matchers:
+    - alertname = HostIsDown
+    - hypervisor_type = virtual_machine
+    equal: ['hypervisor_name']
+  receivers:
+  - name: blackhole
+  - name: Telegram-Personal
+    telegram_configs:
+    - send_resolved: true
+      api_url: "https://api.telegram.org"
+      bot_token: "{{ vault_alertmanager_bot_token }}"
+      chat_id: -394825983
+      message: !unsafe '{{ template "telegram.default.message" . }}'
+      parse_mode: HTML

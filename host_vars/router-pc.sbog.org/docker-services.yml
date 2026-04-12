@@ -1,7 +1,7 @@
 ---
 docker_services_configurations:
   - stack_name: "traefik"
-    swarm_manager_name: ru02.sbog.org
+    swarm_manager_name: router-pc.sbog.org
     tags:
       - "auth"
     compose:

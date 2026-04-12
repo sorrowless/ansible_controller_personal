@@ -1,5 +1,6 @@
 ru01.sbog.org
 ru02.sbog.org
+ru04.sbog.org
 router-pc.sbog.org
 us03.sbog.org
 oom-services.sbog.org
@@ -35,6 +36,7 @@ oom-services.sbog.org
 
 [vpn_servers]
 ru01.sbog.org
+ru04.sbog.org
 us03.sbog.org
 oom-services.sbog.org
 
@@ -54,6 +56,7 @@ vpn_servers
 
 [docker_hosts]
 ru01.sbog.org
+ru04.sbog.org
 router-pc.sbog.org
 us03.sbog.org
 oom-services.sbog.org
@@ -63,6 +66,7 @@ ru02.sbog.org
 
 [server_common]
 ru01.sbog.org
+ru04.sbog.org
 router-pc.sbog.org
 us03.sbog.org
 oom-services.sbog.org
@@ -91,12 +95,15 @@ ru01.sbog.org
 [traefik]
 ru01.sbog.org
 ru02.sbog.org
+ru04.sbog.org
 router-pc.sbog.org
 us03.sbog.org
 oom-services.sbog.org
+router-pc.sbog.org
 
 [3x-ui-servers]
 ru01.sbog.org
+ru04.sbog.org
 us03.sbog.org
 oom-services.sbog.org
 

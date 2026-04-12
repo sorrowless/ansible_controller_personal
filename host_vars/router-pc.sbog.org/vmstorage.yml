@@ -1,0 +1,19 @@
+---
+vmstorage_container_name: vmstorage
+vmstorage_docker_image: "victoriametrics/vmstorage:v1.113.0-cluster"
+vmstorage_docker_network_name: prom_network
+vmstorage_command:
+- '-storageDataPath=/storage'
+- '-retentionPeriod=30d'
+- '-dedup.minScrapeInterval=30s'
+- '-search.maxUniqueTimeseries=15000000'
+
+vmstorage_ports: []
+vmstorage_stack_name: mon
+vmstorage_swarm_cluster: true
+vm_swarm_manager: router-pc.sbog.org
+vmstorage_swarm_deploy:
+  mode: replicated
+  replicas: 1
+  placement:
+    constraints: []

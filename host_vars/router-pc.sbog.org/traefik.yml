@@ -6,7 +6,6 @@ traefik_environment_vars:
 # On macs there is no root group
 traefik_host_group: staff
 traefik_host_user: sbog
-traefik_host_confdir: /Users/sbog/configs/traefik
 traefik_docker_network_name: 'tf_net_public'
 traefik_docker_networks:
   tf_net_public:
@@ -15,10 +14,27 @@ traefik_docker_networks:
 traefik_swarm_cluster: true
 # traefik_swarm_manager value is inventory/hosts name, not actual DNS one
 traefik_swarm_manager: router-pc.sbog.org
-traefik_web_host: router-pc.sbog.org
+traefik_web_host: router-pc.sbog.ru
 
 traefik_dynamic_confs:
   global_basicauth.yml: "{{ vault_traefik_global_basicauth }}"
+  forward_to_macmini.yml:
+    http:
+      serversTransports:
+        my-insecure-transport:
+          insecureSkipVerify: true
+
+      routers:
+        forward:
+          rule: Host(`tr.sbog.ru`) || Host(`auth.sbog.ru`) || Host(`jackett.sbog.ru`) || Host(`radarr.sbog.ru`) || Host(`lidarr.sbog.ru`) || Host(`sonarr.sbog.ru`)
+          service: forward
+
+      services:
+        forward:
+          loadBalancer:
+            serversTransport: my-insecure-transport
+            servers:
+              - url: https://10.10.10.196:443
 
 traefik_swarm_deploy:
   mode: global
@@ -30,7 +46,7 @@ traefik_swarm_deploy:
     - "traefik.http.routers.dashboard.rule=Host(`{{ traefik_web_host }}`) && (PathPrefix(`/traefik/api`) || PathPrefix(`/traefik/dashboard`))"
     - "traefik.http.routers.dashboard.service=api@internal"
     # Use forward auth to protect dashboard and api
-    - "traefik.http.routers.dashboard.middlewares=forward-auth"
+    #- "traefik.http.routers.dashboard.middlewares=forward-auth"
     # - "traefik.http.routers.dashboard.middlewares=basic-auth@file"
     - "traefik.http.routers.dashboard.entrypoints=websecure"
     - "traefik.http.routers.dashboard.tls=true"

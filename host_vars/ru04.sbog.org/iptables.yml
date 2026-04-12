@@ -2,7 +2,7 @@
 ---
 iptables:
   host_allowed_udp_ports: []
-  host_allowed_tcp_ports: [80, 443, 9933]
+  host_allowed_tcp_ports: [80, 443]
   flush_all: true
   raw_rules:
     - "-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT -m comment --comment 'accept-anything-already-accepted'"
@@ -11,3 +11,4 @@ iptables:
     - "-A INPUT -p tcp -m multiport --dports 22,909 -s 45.140.146.45/32 -j ACCEPT -m comment --comment 'VPN-NL-ML-01-XTLS-PQHosting'"
     - "-A INPUT -p tcp -m multiport --dports 22,909 -s 176.108.254.93/32 -j ACCEPT -m comment --comment 'VPN-BS-RU-03-XTLS-CLOUDRU-OOM-services'"
     - "-A INPUT -p tcp -m multiport --dports 22,909 -s 213.171.24.21/32 -j ACCEPT -m comment --comment 'VPN-BS-RU-01-XTLS-CLOUDRU'"
+    - "-A INPUT -p tcp -m multiport --dports 22,909 -s 78.132.138.48/32 -j ACCEPT -m comment --comment 'BS-RU-HOME-RT'"
