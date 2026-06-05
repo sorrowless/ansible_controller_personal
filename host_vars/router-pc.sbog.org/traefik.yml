@@ -11,6 +11,9 @@ traefik_docker_networks:
   tf_net_public:
     name: "tf_net_public"
     external: true
+  prom_network:
+    name: "prom_network"
+    external: true
 traefik_swarm_cluster: true
 # traefik_swarm_manager value is inventory/hosts name, not actual DNS one
 traefik_swarm_manager: router-pc.sbog.org
@@ -26,8 +29,11 @@ traefik_dynamic_confs:
 
       routers:
         forward:
-          rule: Host(`tr.sbog.ru`) || Host(`auth.sbog.ru`) || Host(`jackett.sbog.ru`) || Host(`radarr.sbog.ru`) || Host(`lidarr.sbog.ru`) || Host(`sonarr.sbog.ru`)
+          rule: Host(`tr.sbog.ru`) || Host(`auth.sbog.ru`) || Host(`jackett.sbog.ru`) || Host(`radarr.sbog.ru`) || Host(`lidarr.sbog.ru`) || Host(`sonarr.sbog.ru`) || Host(`musicseerr.sbog.ru`) || Host(`home.sbog.ru`)
           service: forward
+        ntopng:
+          rule: Host(`ntopng.sbog.ru`)
+          service: ntopng
 
       services:
         forward:
@@ -35,6 +41,10 @@ traefik_dynamic_confs:
             serversTransport: my-insecure-transport
             servers:
               - url: https://10.10.10.196:443
+        ntopng:
+          loadBalancer:
+            servers:
+              - url: http://10.110.0.1:3000
 
 traefik_swarm_deploy:
   mode: global
