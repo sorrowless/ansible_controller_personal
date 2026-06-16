@@ -35,6 +35,29 @@ and installed it locally and configures as default strategy. You can run it by
 ansible-playbook tools/switch-to-mitogen.yml
 ```
 
+#### Make / interactive deploys
+
+The root `Makefile` wraps common deploy targets. Host-specific targets (`docker-services`, `traefik`) accept an optional `HOST` variable. When `HOST` is not set, `fzf` prompts for one or more hosts from top-level `host_vars/` directories (hidden dirs like `.examples` and `.DEPRECATED` are excluded).
+
+`fzf` is only required for interactive mode (`brew install fzf` on macOS).
+
+```bash
+# Interactive: pick host(s) with fzf (Tab to multi-select, Enter to confirm)
+make docker-services
+
+# Single host
+HOST=ru01.sbog.org make traefik
+
+# Multiple hosts (comma-separated, passed to ansible -l)
+HOST=ru01.sbog.org,us03.sbog.org make docker-services
+
+# Reuse HOST across commands in the same shell
+export HOST=router-pc.sbog.org
+make traefik
+```
+
+For a tabular list of hosts with IP and placement metadata, use `./tools/nodes_list.sh`.
+
 #### Playbooks directory structure
 The directory has the following structure:
 - backups
