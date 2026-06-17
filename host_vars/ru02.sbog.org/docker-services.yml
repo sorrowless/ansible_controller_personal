@@ -207,3 +207,98 @@ docker_services_configurations:
         default:
           external:
             name: "tf_net_public"
+  - stack_name: "media"
+    swarm_manager_name: ru02.sbog.org
+    tags:
+      - "flaresolverr"
+      - "media"
+    compose:
+      services:
+        flaresolverr:
+          image: "ghcr.io/flaresolverr/flaresolverr:latest"
+          environment:
+            - TZ=Etc/UTC
+            - LOG_LEVEL=info
+          deploy:
+            mode: replicated
+            replicas: 1
+            placement:
+              constraints: []
+            labels:
+              - "traefik.enable=true"
+              - "traefik.docker.network=tf_net_public"
+              - "traefik.http.routers.flaresolverr.rule=Host(`flaresolverr.sbog.ru`)"
+              - "traefik.http.routers.flaresolverr.entrypoints=websecure"
+              - "traefik.http.routers.flaresolverr.tls=true"
+              - "traefik.http.routers.flaresolverr.tls.certresolver=acmeDNS"
+              - "traefik.http.routers.flaresolverr.middlewares=forward-auth"
+              - "traefik.http.services.flaresolverr.loadbalancer.server.port=8191"
+      networks:
+        default:
+          external:
+            name: "tf_net_public"
+  - stack_name: "media"
+    swarm_manager_name: ru02.sbog.org
+    tags:
+      - "musicseerr"
+      - "media"
+    compose:
+      services:
+        musicseerr:
+          image: "ghcr.io/habirabbu/musicseerr:latest"
+          environment:
+            - PUID=501
+            - PGID=20
+            - PORT=8688
+            - TZ=Etc/UTC
+          volumes:
+            - /Users/sbog/configs/musicseerr/config:/app/config
+            - /Users/sbog/configs/musicseerr/cache:/app/cache
+            - /Volumes/Ext1tb/media/Music:/music:ro
+          deploy:
+            mode: replicated
+            replicas: 1
+            placement:
+              constraints: []
+            labels:
+              - "traefik.enable=true"
+              - "traefik.docker.network=tf_net_public"
+              - "traefik.http.routers.musicseerr.rule=Host(`musicseerr.sbog.ru`)"
+              - "traefik.http.routers.musicseerr.entrypoints=websecure"
+              - "traefik.http.routers.musicseerr.tls=true"
+              - "traefik.http.routers.musicseerr.tls.certresolver=acmeDNS"
+              - "traefik.http.routers.musicseerr.middlewares=forward-auth"
+              - "traefik.http.services.musicseerr.loadbalancer.server.port=8688"
+      networks:
+        default:
+          external:
+            name: "tf_net_public"
+  - stack_name: "web"
+    swarm_manager_name: ru02.sbog.org
+    tags:
+      - "flame"
+      - "web"
+    compose:
+      services:
+        flame:
+          image: "pawelmalak/flame:multiarch"
+          volumes:
+            - /Users/sbog/configs/flame/data:/app/data
+          deploy:
+            mode: replicated
+            replicas: 1
+            placement:
+              constraints: []
+            labels:
+              - "traefik.enable=true"
+              - "traefik.docker.network=tf_net_public"
+              - "traefik.http.routers.flame.rule=Host(`home.sbog.ru`)"
+              - "traefik.http.routers.flame.entrypoints=websecure"
+              - "traefik.http.routers.flame.tls=true"
+              - "traefik.http.routers.flame.tls.certresolver=acmeDNS"
+              - "traefik.http.routers.flame.middlewares=forward-auth"
+              - "traefik.http.services.flame.loadbalancer.server.port=5005"
+      networks:
+        default:
+          external:
+            name: "tf_net_public"

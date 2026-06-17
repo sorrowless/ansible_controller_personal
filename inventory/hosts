@@ -1,6 +1,5 @@
 ru01.sbog.org
 ru02.sbog.org
-ru04.sbog.org
 router-pc.sbog.org
 us03.sbog.org
 oom-services.sbog.org
@@ -15,6 +14,8 @@ ru01.sbog.org
 [sensu_masters]
 [graphite]
 [grafana]
+router-pc.sbog.org
+
 [common_checks]
 [mysql_server]
 [jenkins]
@@ -36,7 +37,6 @@ oom-services.sbog.org
 
 [vpn_servers]
 ru01.sbog.org
-ru04.sbog.org
 us03.sbog.org
 oom-services.sbog.org
 
@@ -53,20 +53,20 @@ vpn_servers
 [taskd_servers]
 [monitoring_clients]
 [monitoring_servers]
+router-pc.sbog.org
 
 [docker_hosts]
 ru01.sbog.org
-ru04.sbog.org
 router-pc.sbog.org
 us03.sbog.org
 oom-services.sbog.org
 
 [docker_services]
 ru02.sbog.org
+router-pc.sbog.org
 
 [server_common]
 ru01.sbog.org
-ru04.sbog.org
 router-pc.sbog.org
 us03.sbog.org
 oom-services.sbog.org
@@ -95,7 +95,6 @@ ru01.sbog.org
 [traefik]
 ru01.sbog.org
 ru02.sbog.org
-ru04.sbog.org
 router-pc.sbog.org
 us03.sbog.org
 oom-services.sbog.org
@@ -103,7 +102,6 @@ router-pc.sbog.org
 
 [3x-ui-servers]
 ru01.sbog.org
-ru04.sbog.org
 us03.sbog.org
 oom-services.sbog.org
 
@@ -112,3 +110,6 @@ ru01.sbog.org
 
 [keycloak]
 ru01.sbog.org
+
+[prometheus_node_exporters]
+router-pc.sbog.org

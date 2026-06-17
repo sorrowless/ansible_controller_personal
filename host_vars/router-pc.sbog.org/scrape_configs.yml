@@ -1,5 +1,5 @@
 ---
-sc_monitor_openworld.bot:
+sc_monitor_sbog.ru:
   - data:
     - job_name: '{{ ansible_domainname }}-node-exporter'
       scheme: https
@@ -9,7 +9,7 @@ sc_monitor_openworld.bot:
             domainname: '{{ ansible_domainname }}'
             env: production
             ipaddress: '{{ ansible_ip }}'
-            project: akh
+            project: personal
             scrape_type: node_exporter
           targets:
             - '{{ ansible_domainname }}:9100'

@@ -1,6 +1,8 @@
 ---
 placement: "Rostelekom router-pc, RU"
-ansible_host: 10.10.10.11
+ansible_host: "router-pc.sbog.org"
+ansible_ip: 10.10.10.11
+ansible_domainname: "router-pc.sbog.org"
 ansible_port: 22
 sshd_port: 22
 ansible_user: sbog

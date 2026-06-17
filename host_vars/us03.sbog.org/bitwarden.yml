@@ -3,7 +3,7 @@ yubico_client_id: "{{ vault_yubico_client_id }}"
 yubico_secret_key: "{{ vault_yubico_secret_key }}"
 smtp_host: "{{ vault_smtp_host }}"
 smtp_from: "{{ vault_smtp_from }}"
-smtp_port: 587
+smtp_port: 465
 smtp_security: force_tls
 smtp_username: "{{ vault_smtp_username }}"
 smtp_password: "{{ vault_smtp_password }}"
@@ -14,7 +14,7 @@ pg4bw_postgres_password: "{{ vault_pg4bw_postgres_password }}"
 pg4bw_vaultwarden_user: "{{ vault_pg4bw_vaultwarden_user }}"
 pg4bw_vaultwarden_password: "{{ vault_pg4bw_vaultwarden_password }}"
 
-bw_image: vaultwarden/server:1.35.2
+bw_image: vaultwarden/server:1.35.8
 bw_network_name: tf_net
 bw_web_host: bw.sbog.org
 bw_swarm_deploy:

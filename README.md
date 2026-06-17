@@ -37,11 +37,19 @@ ansible-playbook tools/switch-to-mitogen.yml
 
 #### Make / interactive deploys
 
-The root `Makefile` wraps common deploy targets. Host-specific targets (`docker-services`, `traefik`) accept an optional `HOST` variable. When `HOST` is not set, `fzf` prompts for one or more hosts from top-level `host_vars/` directories (hidden dirs like `.examples` and `.DEPRECATED` are excluded).
+The root `Makefile` wraps common deploy targets. `make prepare` bootstraps the virtualenv and installs dependencies from `daemon/requirements.txt` (FastAPI, uvicorn, and related packages).
+
+Host-specific targets (`docker-services`, `traefik`) accept an optional `HOST` variable. When `HOST` is not set, `fzf` prompts for one or more hosts from top-level `host_vars/` directories (hidden dirs like `.examples` and `.DEPRECATED` are excluded).
 
 `fzf` is only required for interactive mode (`brew install fzf` on macOS).
 
 ```bash
+# Start the Ansible provisioner API (Swagger UI at /docs)
+make daemon
+
+# Override bind address/port
+DAEMON_HOST=0.0.0.0 DAEMON_PORT=9000 make daemon
+
 # Interactive: pick host(s) with fzf (Tab to multi-select, Enter to confirm)
 make docker-services
 
@@ -57,6 +65,8 @@ make traefik
 ```
 
 For a tabular list of hosts with IP and placement metadata, use `./tools/nodes_list.sh`.
+
+API details and `curl` examples for the provisioner daemon are in [`daemon/readme.md`](daemon/readme.md).
 
 #### Playbooks directory structure
 The directory has the following structure:

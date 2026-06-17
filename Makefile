@@ -3,6 +3,8 @@
 VENV := .venv
 PYTHON ?= 3.12
 HOST ?= ${HOST}
+DAEMON_HOST ?= 127.0.0.1
+DAEMON_PORT ?= 8000
 
 define run_with_host
 	@export HOST="$${HOST:-$$(bash tools/select-hosts.sh)}"; \
@@ -11,7 +13,8 @@ endef
 
 help:
 		@echo 'Targets:'
-		@echo '  make prepare               - bootstrap uv, venv, and poetry (macOS / Ubuntu)'
+		@echo '  make prepare               - bootstrap uv, venv, poetry, and daemon deps (macOS / Ubuntu)'
+		@echo '  make daemon                - start Ansible provisioner API (127.0.0.1:8000)'
 		@echo '  make sshconfig             - change ssh config on localhost'
 		@echo '  make docker-services       - deploy docker-services (HOST or fzf)'
 		@echo '  make traefik               - deploy traefik with its config (HOST or fzf)'
@@ -21,6 +24,10 @@ help:
 
 prepare:
 		@bash tools/prepare.sh "$(PYTHON)"
+
+daemon: prepare
+		@. $(VENV)/bin/activate && uvicorn main:app --app-dir daemon \
+			--host $(DAEMON_HOST) --port $(DAEMON_PORT)
 
 sshconfig: prepare
 		@. $(VENV)/bin/activate && ./playbooks/utils/run-desktop.yml -c 'localhost,' -t sshconfig

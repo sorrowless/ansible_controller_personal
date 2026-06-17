@@ -7,6 +7,12 @@ docker_additional_networks:
     subnet: 10.100.0.0/16
     gateway: 10.100.0.1
     iprange: 10.100.128.0/17
+  - name: prom_network
+    driver: overlay
+    bridge_name: prom_bridge
+    subnet: 10.101.0.0/16
+    gateway: 10.101.0.1
+    iprange: 10.101.128.0/17
 
 docker_live_restore: false
 docker_swarm_manager: true

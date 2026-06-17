@@ -22,25 +22,26 @@ traefik_web_host: router-pc.sbog.ru
 traefik_dynamic_confs:
   global_basicauth.yml: "{{ vault_traefik_global_basicauth }}"
   forward_to_macmini.yml:
-    http:
-      serversTransports:
-        my-insecure-transport:
-          insecureSkipVerify: true
-
+    tcp:
       routers:
-        forward:
-          rule: Host(`tr.sbog.ru`) || Host(`auth.sbog.ru`) || Host(`jackett.sbog.ru`) || Host(`radarr.sbog.ru`) || Host(`lidarr.sbog.ru`) || Host(`sonarr.sbog.ru`) || Host(`musicseerr.sbog.ru`) || Host(`home.sbog.ru`)
-          service: forward
+        passeverything:
+          rule: HostSNI(`*`)
+          entrypoints: websecure
+          service: front
+          tls:
+            passthrough: true
+      service:
+        front:
+          loadBalancer:
+            servers:
+              - address: '10.10.10.11:443'
+    http:
+      routers:
         ntopng:
           rule: Host(`ntopng.sbog.ru`)
           service: ntopng
 
       services:
-        forward:
-          loadBalancer:
-            serversTransport: my-insecure-transport
-            servers:
-              - url: https://10.10.10.196:443
         ntopng:
           loadBalancer:
             servers:

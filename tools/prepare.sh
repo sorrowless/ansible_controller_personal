@@ -71,5 +71,15 @@ ensure_poetry() {
   "$UV" pip install --python "${VENV}/bin/python" packaging >/dev/null
 }
 
+DAEMON_REQUIREMENTS="${ROOT}/daemon/requirements.txt"
+
+ensure_daemon_deps() {
+  ensure_venv
+  [ -f "${DAEMON_REQUIREMENTS}" ] || die "missing ${DAEMON_REQUIREMENTS}"
+  echo "prepare: installing daemon dependencies from daemon/requirements.txt..."
+  "$UV" pip install --python "${VENV}/bin/python" -r "${DAEMON_REQUIREMENTS}"
+}
+
 ensure_poetry
+ensure_daemon_deps
 echo "prepare: ready ($( "${VENV}/bin/poetry" --version ))"

@@ -5,9 +5,8 @@ vmagent_docker_image: "victoriametrics/vmagent:v1.113.0"
 vmagent_ports: []
 
 vmagent_config_dir: /var/lib/vmagent
-vmagent_extra_hosts:
-- "{{ ansible_host }}:{{ ansible_ip }}"
 
+vmagent_remotewrite_address: "{{ vminsert_container_name }}"
 vmagent_additional_configs:
   - "{{ sc_monitor_sbog.ru }}"
 
@@ -19,3 +18,57 @@ vmagent_swarm_deploy:
   replicas: 1
   placement:
     constraints: []
+
+prometheus_config:
+  global:
+    scrape_interval:     10s
+  scrape_configs:
+    - job_name: '{{ ansible_domainname }}-node-exporter'
+      scheme: http
+      static_configs:
+        - labels:
+            dns_hostname: '{{ ansible_domainname }}'
+            domainname: '{{ ansible_domainname }}'
+            env: production
+            ipaddress: '{{ ansible_ip }}'
+            project: personal
+            scrape_type: node_exporter
+          targets:
+            #- '{{ ansible_domainname }}:9100'
+            - '172.17.0.1:9100'
+    - job_name: '{{ ansible_domainname }}-vminsert'
+      scheme: http
+      static_configs:
+        - labels:
+            dns_hostname: '{{ ansible_domainname }}'
+            domainname: '{{ ansible_domainname }}'
+            env: production
+            ipaddress: '{{ ansible_ip }}'
+            project: personal
+            scrape_type: vminsert
+          targets:
+            - 'vminsert:8480'
+    - job_name: '{{ ansible_domainname }}-vmselect'
+      scheme: http
+      static_configs:
+        - labels:
+            dns_hostname: '{{ ansible_domainname }}'
+            domainname: '{{ ansible_domainname }}'
+            env: production
+            ipaddress: '{{ ansible_ip }}'
+            project: personal
+            scrape_type: vmselect
+          targets:
+            - 'vmselect:8481'
+    - job_name: '{{ ansible_domainname }}-vmstorage'
+      scheme: http
+      static_configs:
+        - labels:
+            dns_hostname: '{{ ansible_domainname }}'
+            domainname: '{{ ansible_domainname }}'
+            env: production
+            ipaddress: '{{ ansible_ip }}'
+            project: personal
+            scrape_type: vmstorage
+          targets:
+            - 'vmstorage:8482'
