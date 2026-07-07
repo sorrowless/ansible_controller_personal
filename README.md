@@ -1,129 +1,171 @@
-# sbog.controller
+# Ansible Controller
 
-Base framework to create further Ansible deploys for organization. It's nothing
-more but just a carcass to further developing deployments.
+Каркас для деплоя ПО на удалённые машины через Ansible: плейбуки, переменные хостов, скрипты (`tools/`), Makefile-обёртки и REST-демон для оркестрации локальных запусков `ansible-playbook`.
 
-#### Requirements
+Полная документация: [`docs/README.md`](docs/README.md). Для AI-агентов: [`AGENTS.md`](AGENTS.md).
 
-Ansible Galaxy
+## Требования
 
-#### Dependencies
+| Компонент | Назначение |
+|-----------|------------|
+| Ansible + ansible-galaxy | Запуск плейбуков и установка ролей |
+| `uv` | Создаётся через `make prepare` |
+| `fzf` | Интерактивный выбор хостов в `make` (`brew install fzf`) |
+| GNU readlink | Для `set-vars.sh` на macOS (`brew install coreutils`) |
 
-None
-
-#### Base usage
-
-This will install all needed roles to `roles` directory:
-
-```bash
-./tools/get-roles.sh
-```
-
-Then you just need to create according group/host vars, inventory files and run
-your playbooks.
-In case you just need to know current nodes list, run
+## Быстрый старт
 
 ```bash
-./tools/nodes_list.sh
-```
+make prepare
+. ./tools/set-vars.sh
+./tools/get-roles.sh traefik server-common
 
-Some examples can be found in `host_vars/.examples` directory.
-In case you want to faster deploys there is a playbook which downloads mitogen
-and installed it locally and configures as default strategy. You can run it by
+| Таргет | Описание |
+|--------|----------|
+| `prepare` | uv, `.venv`, зависимости демона |
+| `daemon` | REST API (Swagger: `/docs`) |
+| `sshconfig` | SSH config на localhost |
+| `docker-services` | Деплой docker-services |
+| `traefik` | Деплой Traefik |
 
-```bash
-ansible-playbook tools/switch-to-mitogen.yml
-```
-
-#### Make / interactive deploys
-
-The root `Makefile` wraps common deploy targets. `make prepare` bootstraps the virtualenv and installs dependencies from `daemon/requirements.txt` (FastAPI, uvicorn, and related packages).
-
-Host-specific targets (`docker-services`, `traefik`) accept an optional `HOST` variable. When `HOST` is not set, `fzf` prompts for one or more hosts from top-level `host_vars/` directories (hidden dirs like `.examples` and `.DEPRECATED` are excluded).
-
-`fzf` is only required for interactive mode (`brew install fzf` on macOS).
+`fzf` нужен только если `HOST` не задан. Скрытые каталоги в `host_vars/` (`.examples` и т.п.) не попадают в выбор.
 
 ```bash
-# Start the Ansible provisioner API (Swagger UI at /docs)
 make daemon
-
-# Override bind address/port
 DAEMON_HOST=0.0.0.0 DAEMON_PORT=9000 make daemon
 
-# Interactive: pick host(s) with fzf (Tab to multi-select, Enter to confirm)
-make docker-services
+make docker-services                                    # fzf
+HOST=ru01.example.com make traefik
+HOST=ru01.example.com,us03.example.com make docker-services
 
-# Single host
-HOST=ru01.sbog.org make traefik
-
-# Multiple hosts (comma-separated, passed to ansible -l)
-HOST=ru01.sbog.org,us03.sbog.org make docker-services
-
-# Reuse HOST across commands in the same shell
-export HOST=router-pc.sbog.org
+export HOST=router.example.com
 make traefik
 ```
 
-For a tabular list of hosts with IP and placement metadata, use `./tools/nodes_list.sh`.
+Список хостов: `./tools/nodes_list.sh`.
 
-API details and `curl` examples for the provisioner daemon are in [`daemon/readme.md`](daemon/readme.md).
+## Плейбуки
 
-#### Playbooks directory structure
-The directory has the following structure:
-- backups
-- configuration
-- databases
-- exporters
-- logs
-- monitoring
-- services
-- utils
-- vpns
-- full-files
+Каталоги: `backups`, `configuration`, `databases`, `exporters`, `logs`, `monitoring`, `services`, `utils`, `vpns`.
 
-Playbooks in every directory run exactly one included role. But full-files
-includes entire run-files from subdirectories.
+Типичный плейбук — один `run-*.yml` на одну Galaxy-роль:
 
 ```yaml
-# example run-bitwarden-full.yml
-...
----
-- name: Ensure TLS certificates
-  import_playbook: services/run-tls.yml
-
-- name: Setup Nginx
-  import_playbook: services/run-nginx.yml
-...
-```
-```yaml
-# example services/run-tls.yml
-...
+#!/usr/bin/env -S ansible-playbook -e @vars/extra.yaml
 ---
 - name: Configure target servers
-  hosts: all
-  #serial: 1
-  remote_user: root
-
+  hosts: traefik
   roles:
-    - { role: sorrowless.tls, tags: ['tls'] }
-...
+    - { role: sorrowless.traefik, tags: ['traefik'] }
 ```
 
-#### Gitlab-CI
-
-Python script tools/ci-script.py check git diff for current branch and target branch (specified by option --target_branch). For changed host and group vars files that script find corresponding roles for thats files in tools/roles_lists directory and download it. Than scrip generate ansible commands with limits and tags. On option --preview script just show commands, on option --apply script will execute that commands. You can specify tags for generated commands and manualy match config files with run-files in tools/ci-files-mapping.yml.
+Композитные стеки — в корне `playbooks/` как `run-*-full.yml` (19 файлов), например `run-minimal-full.yml`, `run-mail-full.yml`:
 
 ```yaml
-# example tools/ci-files-mapping.yml
-scrape_configs_*.yml: # host/group vars file. You can use unix wildcards in conf-files names
-  run-vmagent.yml: # run-file who will execute for that conf-faile
-  - some-tag # tags for that run-file
+- name: Ensure TLS certificates
+  import_playbook: services/run-tls.yml
 ```
 
-#### License
+```bash
+./playbooks/run-minimal-full.yml -l myhost.example.com --tags common
+find playbooks -name 'run-*.yml' | sort
+```
+
+Каталог: [`docs/reference/playbooks-catalog.md`](docs/reference/playbooks-catalog.md).
+
+## Переменные и vault
+
+```bash
+. ./tools/set-vars.sh    # become + vault (+ mitogen если установлен)
+```
+
+Плейбуки подключают [`vars/extra.yaml`](vars/extra.yaml). Vault: `tools/get-vault-pass` через [`ansible.cfg`](ansible.cfg).
+
+Примеры host vars: [`host_vars/.examples/`](host_vars/.examples/).
+
+## Ускорение: mitogen
+
+```bash
+ansible-playbook tools/switch-to-mitogen.yml
+. ./tools/set-vars.sh
+```
+
+См. [`docs/reference/roles-lists.md`](docs/reference/roles-lists.md).
+
+## Make
+
+```bash
+make help
+```
+
+| Таргет | Описание |
+|--------|----------|
+| `prepare` | uv, `.venv`, зависимости демона |
+| `daemon` | REST API (Swagger: `/docs`) |
+| `sshconfig` | SSH config на localhost |
+| `docker-services` | Деплой docker-services |
+| `traefik` | Деплой Traefik |
+
+`fzf` нужен только если `HOST` не задан. Скрытые каталоги в `host_vars/` (`.examples` и т.п.) не попадают в выбор.
+
+```bash
+make daemon
+DAEMON_HOST=0.0.0.0 DAEMON_PORT=9000 make daemon
+
+make docker-services                                    # fzf
+HOST=ru01.example.com make traefik
+HOST=ru01.example.com,us03.example.com make docker-services
+
+export HOST=router.example.com
+make traefik
+```
+
+Список хостов: `./tools/nodes_list.sh`.
+
+## Плейбуки
+
+Каталоги: `backups`, `configuration`, `databases`, `exporters`, `logs`, `monitoring`, `services`, `utils`, `vpns`.
+
+Типичный плейбук — один `run-*.yml` на одну Galaxy-роль:
+
+API и `curl`-примеры: [`daemon/readme.md`](daemon/readme.md), [`docs/guides/provisioner-daemon.md`](docs/guides/provisioner-daemon.md).
+
+## CI
+
+Скрипт [`tools/ci-script.py`](tools/ci-script.py) анализирует git diff, скачивает роли и генерирует ansible-команды. Маппинг vars → playbooks: [`tools/ci-config.yml`](tools/ci-config.yml).
+
+```bash
+python tools/ci-script.py --preview --target_branch main
+python tools/ci-script.py --apply --target_branch main
+```
+
+Пример маппинга в `ci-config.yml`:
+>>>>>>> 20beb2b6f218fd14db6e92ac00a48170d021b9a7
+
+```yaml
+mappings:
+  scrape_configs_*.yml:
+    playbooks/monitoring/run-vmagent.yml: {}
+
+  docker.yml:
+    playbooks/services/run-docker.yml:
+      priority: 30
+```
+
+См. [`docs/guides/ci-automation.md`](docs/guides/ci-automation.md).
+
+## Примеры сценариев
+
+| Сценарий | Документ |
+|----------|----------|
+| Минимальный сервер | [`docs/examples/minimal-server.md`](docs/examples/minimal-server.md) |
+| Traefik | [`docs/examples/traefik-deploy.md`](docs/examples/traefik-deploy.md) |
+| Мониторинг | [`docs/examples/monitoring-stack.md`](docs/examples/monitoring-stack.md) |
+
+## Лицензия
 
 Apache 2.0
 
-#### Author Information
+## Автор
 
 [Stan Bogatkin](https://sbog.org)
