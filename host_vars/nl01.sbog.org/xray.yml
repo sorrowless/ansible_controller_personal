@@ -1,0 +1,116 @@
+xray_image_name: ghcr.io/xtls/xray-core
+xray_version: 26.4.17
+
+xray_networks:
+  xray_net:
+    name: xray_net
+    external: True
+
+xray_ports:
+  - 443:443
+
+xray_swarm_deploy:
+  mode: replicated
+  replicas: 1
+  placement:
+    constraints: []
+
+xray_public_key: "{{ vault_xray_public_key }}"
+xray_interface: eth1  # internal container interface in docker_gwbridge network (default route)
+xray_conf:
+  {
+    "log": {
+      "loglevel": "debug",
+      "dnsLog": true
+    },
+    "dns": {
+      "queryStrategy": "UseIPv4",
+      "servers": [
+        "8.8.8.8",
+        "1.1.1.1"
+      ]
+    },
+    "inbounds": [
+      {
+        "tag": "reality",
+        "listen": "0.0.0.0",
+        "port": 443,
+        "protocol": "vless",
+        "settings": {
+          "clients": [
+            {
+              "id": "{{ vault_xray_conf.inbounds.settings.clients[0].id }}",
+              "flow": "xtls-rprx-vision"
+            }
+          ],
+          "decryption": "none",
+          "network": "tcp,udp",
+          "followRedirect": true
+        },
+        "sniffing": {
+          "enabled": false,
+          "destOverride": ["http", "tls", "quic"],
+          "routeOnly": false
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "security": "reality",
+          "sockopt": {
+            "acceptProxyProtocol": false
+          },
+          "realitySettings": {
+            "dest": "s3.us-east-2.amazonaws.com:443",
+            "serverNames": [
+               "s3.us-east-2.amazonaws.com"
+            ],
+            "privateKey": "{{ vault_xray_conf.inbounds.streamSettings.realitySettings.privateKey }}",
+            "shortIds": [
+              "{{ vault_xray_conf.inbounds.streamSettings.realitySettings.shortIds[0] }}"
+            ],
+            "fingerprint": "firefox"
+          }
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {},
+        "streamSettings": {
+          "sockopt": {
+            "interface": "{{ xray_interface }}"
+          }
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      }
+    ],
+    "routing": {
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "domain": ["geosite:category-ads-all"],
+          "outboundTag": "block"
+        },
+        {
+          "ip": ["geoip:private"],
+          "outboundTag": "direct"
+        },
+        {
+          "ip": ["geoip:ru"],
+          "outboundTag": "block"
+        },
+        {
+          "domain": ["geosite:category-ru", "geosite:yandex", "geosite:mailru", "geosite:vk"],
+          "outboundTag": "block"
+        },
+        {
+          "network": "tcp,udp",
+          "outboundTag": "direct"
+        }
+      ]
+    }
+  }

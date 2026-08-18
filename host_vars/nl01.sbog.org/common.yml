@@ -1,0 +1,14 @@
+---
+placement: Webhost1.ru, NL
+ansible_ip: 77.91.127.118
+ansible_host: 77.91.127.118
+ansible_port: 909
+ansible_user: sbog
+ansible_host_domain: nl01.sbog.org
+ansible_become: true
+ansible_host_description: "Host in NL"
+
+server_common_host:
+  dns_hostname: nl01.sbog.org
+  packages:
+    - python3-jsondiff
