@@ -1,0 +1,144 @@
+#xray_image_name: ghcr.io/xtls/xray-core
+xray_version: 26.4.17
+xray_local_install: true
+
+#xray_networks:
+#  xray_net:
+#    name: xray_net
+#    external: True
+
+#xray_ports:
+#  - 443:443
+
+#xray_swarm_deploy:
+#  mode: replicated
+#  replicas: 1
+#  placement:
+#    constraints: []
+
+xray_public_key: "{{ vault_xray_public_key }}"
+xray_interface_ru: ens3
+xray_interface_ge: ens8
+xray_conf:
+  {
+    "log": {
+      "loglevel": "debug",
+      "dnsLog": true
+    },
+    "dns": {
+      "queryStrategy": "UseIPv4",
+      "servers": [
+        "8.8.8.8",
+        "1.1.1.1"
+      ]
+    },
+    "inbounds": [
+      {
+        "tag": "reality",
+        "listen": "0.0.0.0",
+        "port": 443,
+        "protocol": "vless",
+        "settings": {
+          "clients": [
+            {
+              "id": "{{ vault_xray_conf.inbounds.settings.clients[0].id }}",
+              "flow": "xtls-rprx-vision"
+            }
+          ],
+          "decryption": "none",
+          "network": "tcp,udp",
+          "followRedirect": true
+        },
+        "sniffing": {
+          "enabled": false,
+          "destOverride": ["http", "tls", "quic"],
+          "routeOnly": false
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "security": "reality",
+          "sockopt": {
+            "acceptProxyProtocol": false
+          },
+          "realitySettings": {
+            "dest": "{{ vault_xray_conf.inbounds.streamSettings.dest }}",
+            "serverNames": [
+               "{{ vault_xray_conf.inbounds.streamSettings.serverNames[0] }}"
+            ],
+            "privateKey": "{{ vault_xray_conf.inbounds.streamSettings.realitySettings.privateKey }}",
+            "shortIds": [
+              "{{ vault_xray_conf.inbounds.streamSettings.realitySettings.shortIds[0] }}"
+            ],
+            "fingerprint": "firefox"
+          }
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "direct-ru",
+        "protocol": "freedom",
+        "settings": {},
+        "streamSettings": {
+          "sockopt": {
+            "interface": "{{ xray_interface_ru }}"
+          }
+        }
+      },
+      {
+        "tag": "direct-ge",
+        "protocol": "freedom",
+        "settings": {},
+        "streamSettings": {
+          "sockopt": {
+            "interface": "{{ xray_interface_ge }}"
+          }
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      }
+    ],
+    "routing": {
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "domain": ["geosite:category-ads-all"],
+          "outboundTag": "block"
+        },
+        {
+          "ip": ["geoip:ru"],
+          "outboundTag": "direct-ru"
+        },
+        {
+          "ip": ["geoip:private"],
+          "outboundTag": "direct-ru"
+        },
+        {
+          "domain": ["geosite:category-ru", "geosite:yandex", "geosite:mailru", "geosite:vk"],
+          "outboundTag": "direct-ru"
+        },
+        {
+          "domain": ["yandex.net", "webvisor.com"],
+          "outboundTag": "direct-ru"
+        },
+        {
+          "domain": ["2gis.com", "2giskz.app"],
+          "outboundTag": "direct-ru"
+        },
+        {
+          "domain": ["rutor.info", "exkinoray.ru"],
+          "outboundTag": "direct-ru"
+        },
+        {
+          "domain": ["sbog.org", "sbog.ru"],
+          "outboundTag": "direct-ru"
+        },
+        {
+          "network": "tcp,udp",
+          "outboundTag": "direct-ge"
+        }
+      ]
+    }
+  }

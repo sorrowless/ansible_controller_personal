@@ -1,7 +1,7 @@
 # Iptables rules
 ---
 iptables:
-  host_allowed_udp_ports: []
+  host_allowed_udp_ports: [80, 443]
   host_allowed_tcp_ports: [80, 443, 9933]
   flush_all: true
   raw_rules:

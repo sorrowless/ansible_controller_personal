@@ -1,0 +1,135 @@
+---
+xray_version: 26.4.17
+xray_networks:
+  tf_net:
+    name: tf_net
+    external: True
+xray_sni_host: s3.us-east-2.amazonaws.com
+xray_interface: eth1  # internal container interface in docker_gwbridge network (default route)
+
+xray_swarm_deploy:
+  mode: replicated
+  replicas: 1
+  placement:
+    constraints: []
+  labels:
+    - "traefik.enable=true"
+    - "traefik.swarm.network={{ traefik_docker_network_name }}"
+    - "traefik.tcp.routers.xray.rule=HostSNI(`{{ xray_sni_host }}`)"
+    - "traefik.tcp.routers.xray.tls.passthrough=true"
+    - "traefik.tcp.routers.xray.entrypoints=websecure"
+    - "traefik.tcp.services.xray.loadbalancer.server.port=443"
+
+xray_conf:
+  {
+    "log": {
+      "loglevel": "info",
+      "dnsLog": true
+    },
+    "dns": {
+      "queryStrategy": "UseIPv4",
+      "servers": [
+        "8.8.8.8",
+        "1.1.1.1"
+      ]
+    },
+    "inbounds": [
+      {
+        "tag": "reality",
+        "listen": "0.0.0.0",
+        "port": 443,
+        "protocol": "vless",
+        "settings": {
+          "clients": [
+            {
+              "id": "{{ vault_xray_conf.inbounds.settings.clients[0].id }}",
+              "flow": "xtls-rprx-vision"
+            }
+          ],
+          "decryption": "none",
+          "network": "tcp,udp",
+          "followRedirect": true
+        },
+        "sniffing": {
+          "enabled": false,
+          "destOverride": ["http", "tls", "quic"],
+          "routeOnly": false
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "security": "reality",
+          "sockopt": {
+            "acceptProxyProtocol": false
+          },
+          "realitySettings": {
+            "dest": "s3.us-east-2.amazonaws.com:443",
+            "serverNames": [
+               "s3.us-east-2.amazonaws.com"
+            ],
+            "privateKey": "{{ vault_xray_conf.inbounds.streamSettings.realitySettings.privateKey }}",
+            "shortIds": [
+              "{{ vault_xray_conf.inbounds.streamSettings.realitySettings.shortIds[0] }}"
+            ],
+            "fingerprint": "firefox"
+          }
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {},
+        "streamSettings": {
+          "sockopt": {
+            "interface": "{{ xray_interface }}"
+          }
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      }
+    ],
+    "routing": {
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "domain": ["geosite:category-ads-all"],
+          "outboundTag": "block"
+        },
+        {
+          "ip": ["geoip:ru"],
+          "outboundTag": "block"
+        },
+        {
+          "ip": ["geoip:private"],
+          "outboundTag": "direct"
+        },
+        {
+          "domain": ["geosite:category-ru", "geosite:yandex", "geosite:mailru", "geosite:vk"],
+          "outboundTag": "block"
+        },
+        {
+          "domain": ["yandex.net", "webvisor.com"],
+          "outboundTag": "block"
+        },
+        {
+          "domain": ["2gis.com", "2giskz.app"],
+          "outboundTag": "block"
+        },
+        {
+          "domain": ["rutor.info", "exkinoray.ru"],
+          "outboundTag": "direct"
+        },
+        {
+          "domain": ["sbog.org", "sbog.ru"],
+          "outboundTag": "direct"
+        },
+        {
+          "network": "tcp,udp",
+          "outboundTag": "direct"
+        }
+      ]
+    }
+  }

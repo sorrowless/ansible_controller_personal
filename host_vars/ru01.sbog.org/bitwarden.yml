@@ -14,7 +14,7 @@ pg4bw_postgres_password: "{{ vault_pg4bw_postgres_password }}"
 pg4bw_vaultwarden_user: "{{ vault_pg4bw_vaultwarden_user }}"
 pg4bw_vaultwarden_password: "{{ vault_pg4bw_vaultwarden_password }}"
 
-bw_image: vaultwarden/server:1.35.8
+bw_image: vaultwarden/server:1.37.1
 bw_network_name: tf_net
 bw_web_host: bw.sbog.org
 bw_swarm_deploy:
@@ -28,7 +28,7 @@ bw_swarm_deploy:
 
 
 # Postgres as a db
-pg4bw_image: "harbor.oom.ag/library/postgres_with_wal-g:14.8"
+pg4bw_image: "lyricistmarbling/postgres_with_walg:14.8"
 pg4bw_container_name: bitwarden-db
 pg4bw_data: /var/bitwarden-db
 pg4bw_init_user_db_dir: /var/bitwarden-db-init

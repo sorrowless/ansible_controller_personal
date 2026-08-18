@@ -1,0 +1,25 @@
+---
+iptables_defaults:
+  enabled: true
+  ntp_allowed: true
+  default_allowed_tcp_ports: [80, 443]
+  group_allowed_tcp_ports: []
+  group_allowed_udp_ports: []
+  host_allowed_udp_ports: []
+  host_allowed_tcp_ports: []
+  default_allowed_udp_ports: [80, 443]
+  deny_all_unallowed: true
+  icmp_allowed: true
+  flush_all: true
+  default_raw_rules:
+    - -A INPUT -m state --state INVALID -j DROP -m comment --comment 'drop-invalid-packets'
+    - -A INPUT -i lo -j ACCEPT -m comment --comment 'accept-anything-on-the-loopback-interface'
+    - -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT -m comment --comment 'accept-anything-already-accepted'
+    - -A INPUT -s {{ ansible_ip }}/32 -j ACCEPT -m comment --comment 'Access-from-itself'
+    - -A INPUT -p tcp -m multiport --dports 22,80,443,909 -s 213.171.24.21/32 -j ACCEPT -m comment --comment 'VPN-BS-RU-01-XTLS-CLOUDRU'
+    - -A INPUT -p tcp -m multiport --dports 22,80,443,909 -s 78.132.138.48/32 -m comment --comment BS-RU-00-PERSONAL-HOME-STATIC -j ACCEPT
+    - -A INPUT -p tcp -m multiport --dports 22,80,443,909 -s 176.108.254.93/32 -m comment --comment VPN-BS-RU-03-XTLS-CLOUDRU-OOM-services -j ACCEPT
+    - -A INPUT -p tcp -m multiport --dports 22,80,443,909 -s 107.173.111.72/32 -m comment --comment VPN-BS-US-01-XTLS-RACKNERD -j ACCEPT
+    - -A INPUT -p tcp -m multiport --dports 22,80,443,909 -s 194.87.216.33/32 -j ACCEPT -m comment --comment 'VPN-BS-GE-01-XTLS'
+    - -A INPUT -s 192.168.1.0/24 -p tcp -m comment --comment 'Internal-network' -j ACCEPT
+  raw_rules: []

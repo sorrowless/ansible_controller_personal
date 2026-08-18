@@ -1,0 +1,14 @@
+---
+placement: RU-GE
+ansible_ip: 78.24.92.84
+ansible_host: 78.24.92.84
+ansible_port: 22
+ansible_user: root
+ansible_host_domain: ru04.sbog.org
+ansible_become: true
+ansible_host_description: "Host in RU-GE"
+
+server_common_host:
+  dns_hostname: ru04.sbog.org
+  packages:
+    - python3-jsondiff
