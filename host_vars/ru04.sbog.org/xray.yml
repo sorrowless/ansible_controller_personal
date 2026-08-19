@@ -18,7 +18,7 @@ xray_local_install: true
 
 xray_public_key: "{{ vault_xray_public_key }}"
 xray_interface_ru: ens3
-xray_interface_ge: ens8
+xray_interface_ge: ens4
 xray_conf:
   {
     "log": {
@@ -61,9 +61,9 @@ xray_conf:
             "acceptProxyProtocol": false
           },
           "realitySettings": {
-            "dest": "{{ vault_xray_conf.inbounds.streamSettings.dest }}",
+            "dest": "{{ vault_xray_conf.inbounds.streamSettings.realitySettings.dest }}",
             "serverNames": [
-               "{{ vault_xray_conf.inbounds.streamSettings.serverNames[0] }}"
+               "{{ vault_xray_conf.inbounds.streamSettings.realitySettings.serverNames[0] }}"
             ],
             "privateKey": "{{ vault_xray_conf.inbounds.streamSettings.realitySettings.privateKey }}",
             "shortIds": [

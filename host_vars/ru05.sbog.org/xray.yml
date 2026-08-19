@@ -4,7 +4,7 @@ xray_local_install: true
 
 xray_public_key: "{{ vault_xray_public_key }}"
 xray_interface_ru: ens3
-xray_interface_ge: ens8
+xray_interface_ge: ens4
 xray_conf:
   {
     "log": {
