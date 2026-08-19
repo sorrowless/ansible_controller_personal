@@ -59,9 +59,9 @@ xray_conf:
             "acceptProxyProtocol": false
           },
           "realitySettings": {
-            "dest": "s3.us-east-2.amazonaws.com:443",
+            "dest": "{{ vault_xray_conf.inbounds.streamSettings.realitySettings.dest }}",
             "serverNames": [
-               "s3.us-east-2.amazonaws.com"
+               "{{ vault_xray_conf.inbounds.streamSettings.realitySettings.serverNames[0] }}"
             ],
             "privateKey": "{{ vault_xray_conf.inbounds.streamSettings.realitySettings.privateKey }}",
             "shortIds": [
